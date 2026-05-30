@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Li Zheng Admin Panel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800&family=DM+Sans:opsz,wght@9..40,400;9..40,500&display=swap" onload="this.onload=null;this.rel='stylesheet'"/>
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800&family=DM+Sans:opsz,wght@9..40,400;9..40,500&display=swap"/></noscript>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+<style>
+:root{
+  --bg:#050505;--surface:#0D0D0D;--card:#111;--card2:#181818;
+  --red:#CC0000;--red-l:#E31F26;--red-m:rgba(204,0,0,0.1);--red-b:rgba(204,0,0,0.2);
+  --green:#22c55e;--green-m:rgba(34,197,94,0.1);
+  --yellow:#f59e0b;--yellow-m:rgba(245,158,11,0.1);
+  --text:#e8e8e8;--muted:#666;--dim:#333;--border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.04);
+  --font-h:'Barlow',sans-serif;--font:'DM Sans',sans-serif;--r:4px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}
+a{text-decoration:none;color:inherit}
+button,input,select,textarea{font-family:var(--font)}
+
+/* LOGIN */
+#login{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:9999}
+#login.hide{display:none}
+.login-box{width:100%;max-width:400px;padding:2.5rem;background:var(--surface);border:1px solid var(--border);border-radius:var(--r)}
+.login-logo{font-family:var(--font-h);font-weight:800;font-size:1rem;letter-spacing:0.16em;text-transform:uppercase;color:#fff;margin-bottom:0.2rem}
+.login-logo em{color:var(--red-l);font-style:normal}
+.login-sub{font-size:0.75rem;color:var(--muted);letter-spacing:0.08em;margin-bottom:2rem;font-family:var(--font-h);text-transform:uppercase}
+.login-box label{display:block;font-size:0.62rem;font-family:var(--font-h);font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);margin-bottom:0.4rem}
+.login-box input[type=password]{width:100%;padding:0.75rem 1rem;background:var(--card);border:1px solid var(--border);border-radius:var(--r);color:#fff;font-size:0.875rem;outline:none;transition:border-color 0.2s;margin-bottom:1rem}
+.login-box input[type=password]:focus{border-color:rgba(255,255,255,0.2)}
+.btn-login{width:100%;padding:0.85rem;background:var(--red);color:#fff;font-family:var(--font-h);font-weight:700;font-size:0.82rem;letter-spacing:0.1em;text-transform:uppercase;border:none;border-radius:var(--r);cursor:pointer;transition:background 0.2s}
+.btn-login:hover{background:var(--red-l)}
+.login-err{color:var(--red-l);font-size:0.75rem;font-family:var(--font-h);margin-top:0.75rem;display:none}
+.login-err.show{display:block}
+
+/* APP */
+#app{display:none;min-height:100vh}
+#app.show{display:flex}
+/* SIDEBAR */
+.sidebar{width:220px;min-height:100vh;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0;position:sticky;top:0;height:100vh;overflow-y:auto}
+.sb-brand{padding:1.5rem 1.25rem 1rem;border-bottom:1px solid var(--border)}
+.sb-brand .name{font-family:var(--font-h);font-weight:800;font-size:0.82rem;letter-spacing:0.16em;text-transform:uppercase;color:#fff}
+.sb-brand .name em{color:var(--red-l);font-style:normal}
+.sb-brand .tag{font-size:0.62rem;color:var(--dim);letter-spacing:0.1em;text-transform:uppercase;margin-top:0.15rem}
+.sb-nav{flex:1;padding:0.75rem 0}
+.sb-item{display:flex;align-items:center;gap:0.6rem;padding:0.7rem 1.25rem;color:var(--muted);font-size:0.8rem;font-weight:500;cursor:pointer;border-left:2px solid transparent;transition:all 0.15s;letter-spacing:0.02em}
+.sb-item svg{width:15px;height:15px;flex-shrink:0}
+.sb-item:hover{color:var(--text);background:rgba(255,255,255,0.02)}
+.sb-item.on{color:#fff;background:var(--red-m);border-left-color:var(--red)}
+.sb-footer{padding:1rem 1.25rem;border-top:1px solid var(--border)}
+.logout-btn{display:flex;align-items:center;gap:0.5rem;color:var(--dim);font-size:0.75rem;cursor:pointer;background:none;border:none;transition:color 0.15s;padding:0.4rem 0;font-family:var(--font)}
+.logout-btn:hover{color:var(--red-l)}
+/* MAIN */
+.main-area{flex:1;overflow-y:auto;padding:2rem;min-width:0}
+/* VIEWS */
+.view{display:none}.view.on{display:block}
+/* PAGE HEADER */
+.pg-hd{margin-bottom:2rem}
+.pg-hd h1{font-family:var(--font-h);font-size:1.5rem;font-weight:800;text-transform:uppercase;letter-spacing:0.02em;color:#fff}
+.pg-hd p{color:var(--muted);font-size:0.82rem;margin-top:0.2rem}
+/* STAT CARDS */
+.stat-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1rem;margin-bottom:2rem}
+.stat-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:1.25rem 1.5rem;position:relative;overflow:hidden}
+.stat-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--red);opacity:0.4}
+.stat-lbl{font-size:0.62rem;font-family:var(--font-h);font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);margin-bottom:0.4rem}
+.stat-val{font-family:var(--font-h);font-size:2rem;font-weight:900;color:#fff;line-height:1}
+.stat-val.red{color:var(--red-l)}
+.stat-val.green{color:var(--green)}
+/* TOOLBAR */
+.toolbar{display:flex;align-items:center;gap:0.65rem;flex-wrap:wrap;margin-bottom:1.25rem}
+.toolbar input,.toolbar select{padding:0.55rem 0.9rem;background:var(--card);border:1px solid var(--border);border-radius:var(--r);color:var(--text);font-size:0.8rem;outline:none;transition:border-color 0.2s}
+.toolbar input{flex:1;min-width:180px}
+.toolbar input::placeholder{color:var(--dim)}
+.toolbar input:focus,.toolbar select:focus{border-color:rgba(255,255,255,0.18)}
+.toolbar select option{background:var(--card2)}
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;gap:0.4rem;padding:0.55rem 1.1rem;border-radius:var(--r);font-size:0.78rem;font-weight:600;cursor:pointer;border:none;transition:all 0.15s;white-space:nowrap;font-family:var(--font-h);letter-spacing:0.06em;text-transform:uppercase}
+.btn svg{width:13px;height:13px}
+.btn-red{background:var(--red);color:#fff}.btn-red:hover{background:var(--red-l)}
+.btn-border{background:transparent;border:1px solid var(--border);color:var(--muted)}.btn-border:hover{border-color:rgba(255,255,255,0.2);color:#fff}
+.btn-green{background:var(--green);color:#000}.btn-green:hover{opacity:0.88}
+.btn-danger{background:rgba(204,0,0,0.15);color:var(--red-l);border:1px solid var(--red-b)}.btn-danger:hover{background:rgba(204,0,0,0.25)}
+.icon-btn{width:30px;height:30px;border-radius:var(--r);border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.15s}
+.icon-btn:hover{border-color:rgba(255,255,255,0.2);color:#fff}
+.icon-btn.del:hover{border-color:var(--red-b);color:var(--red-l)}
+.icon-btn svg{width:13px;height:13px}
+/* TABLE */
+.tbl-wrap{background:var(--card);border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
+table{width:100%;border-collapse:collapse}
+thead th{padding:0.75rem 1rem;text-align:left;font-size:0.62rem;font-family:var(--font-h);font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--dim);border-bottom:1px solid var(--border);background:var(--card2);white-space:nowrap}
+tbody tr{border-bottom:1px solid var(--border2);transition:background 0.1s}
+tbody tr:last-child{border-bottom:none}
+tbody tr:hover{background:rgba(255,255,255,0.015)}
+td{padding:0.8rem 1rem;vertical-align:middle;font-size:0.82rem;color:var(--text)}
+.thumb{width:52px;height:38px;object-fit:cover;border-radius:3px;background:var(--card2)}
+.thumb-ph{width:52px;height:38px;border-radius:3px;background:var(--card2);display:flex;align-items:center;justify-content:center;color:var(--dim);font-size:0.55rem;font-family:var(--font-h)}
+.badge{display:inline-block;padding:0.17rem 0.55rem;border-radius:3px;font-size:0.6rem;font-family:var(--font-h);font-weight:700;letter-spacing:0.1em;text-transform:uppercase}
+.badge-available{background:var(--green-m);color:var(--green)}
+.badge-sold{background:var(--red-m);color:var(--red-l)}
+.badge-reserved{background:var(--yellow-m);color:var(--yellow)}
+.badge-sale{background:var(--red-m);color:var(--red-l)}
+.badge-rent{background:rgba(59,130,246,0.1);color:#60a5fa}
+.badge-land{background:var(--green-m);color:var(--green)}
+.toggle{cursor:pointer;width:34px;height:20px;background:var(--card2);border:1px solid var(--border);border-radius:10px;position:relative;transition:background 0.2s;flex-shrink:0;display:inline-block}
+.toggle.on{background:var(--red);border-color:var(--red)}
+.toggle::after{content:'';position:absolute;top:2px;left:2px;width:14px;height:14px;background:#fff;border-radius:50%;transition:left 0.2s}
+.toggle.on::after{left:16px}
+.act-row{display:flex;gap:0.35rem}
+.empty-row td{text-align:center;padding:3rem;color:var(--muted);font-size:0.82rem}
+
+/* FORM PANEL */
+#form-panel{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:1000;backdrop-filter:blur(6px);padding:1rem;overflow-y:auto}
+#form-panel.open{display:flex;align-items:flex-start;justify-content:center}
+.form-card{background:var(--surface);border:1px solid var(--red-b);border-radius:var(--r);padding:2rem;width:100%;max-width:760px;margin:auto;position:relative}
+.form-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--red)}
+.form-card h2{font-family:var(--font-h);font-size:1.1rem;font-weight:800;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:0.2rem}
+.form-card .fsub{font-size:0.72rem;color:var(--muted);font-family:var(--font-h);letter-spacing:0.06em;margin-bottom:1.75rem}
+.fg{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.f-full{grid-column:1/-1}
+.f-item{display:flex;flex-direction:column;gap:0.35rem}
+.f-item label{font-size:0.6rem;font-family:var(--font-h);font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted)}
+.f-item label em{color:var(--red-l);font-style:normal}
+.f-item input,.f-item select,.f-item textarea{padding:0.65rem 0.85rem;background:var(--card);border:1px solid var(--border);border-radius:var(--r);color:#fff;font-size:0.875rem;outline:none;transition:border-color 0.2s;width:100%}
+.f-item input:focus,.f-item select:focus,.f-item textarea:focus{border-color:rgba(255,255,255,0.18)}
+.f-item select option{background:var(--card2)}
+.f-item textarea{resize:vertical;min-height:90px}
+/* Feature tags */
+.tags-wrap{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:0.45rem;display:flex;flex-wrap:wrap;gap:0.35rem;min-height:44px;cursor:text;transition:border-color 0.2s}
+.tags-wrap:focus-within{border-color:rgba(255,255,255,0.18)}
+.ftag{display:inline-flex;align-items:center;gap:0.3rem;padding:0.18rem 0.55rem;background:var(--red-m);border:1px solid var(--red-b);border-radius:3px;font-size:0.7rem;color:var(--red-l);font-family:var(--font-h);font-weight:600}
+.ftag button{background:none;border:none;color:var(--red-l);cursor:pointer;padding:0;font-size:0.8rem;line-height:1;opacity:0.6;transition:opacity 0.15s}
+.ftag button:hover{opacity:1}
+#tags-input{flex:1;min-width:120px;background:transparent;border:none;outline:none;color:#fff;font-size:0.82rem;padding:0.15rem 0.3rem}
+.tags-hint{font-size:0.62rem;color:var(--dim);font-family:var(--font-h);margin-top:0.3rem}
+/* Image upload */
+.upload-zone{border:1.5px dashed var(--border);border-radius:var(--r);padding:1.5rem;text-align:center;cursor:pointer;transition:all 0.2s}
+.upload-zone:hover,.upload-zone.drag{border-color:rgba(255,255,255,0.2);background:rgba(255,255,255,0.02)}
+.upload-zone p{color:var(--muted);font-size:0.78rem}
+.upload-zone span{color:var(--red-l);font-weight:600}
+.upload-zone .hint{font-size:0.65rem;color:var(--dim);margin-top:0.25rem}
+#file-in{display:none}
+.img-grid{display:flex;flex-wrap:wrap;gap:0.5rem;margin-top:0.75rem}
+.img-item{position:relative;width:80px;height:60px;border-radius:3px;overflow:visible;cursor:grab;border:1px solid var(--border)}
+.img-item img{width:100%;height:100%;object-fit:cover;border-radius:3px;display:block;pointer-events:none}
+.img-item.sortable-ghost{opacity:0.3}
+.img-item .rm-img{position:absolute;top:-5px;right:-5px;width:18px;height:18px;background:var(--red);border:none;border-radius:50%;cursor:pointer;color:#fff;font-size:9px;display:flex;align-items:center;justify-content:center;z-index:2}
+.img-item .order-badge{position:absolute;bottom:2px;left:3px;font-size:0.5rem;font-family:var(--font-h);font-weight:700;color:rgba(255,255,255,0.7);background:rgba(0,0,0,0.5);padding:0.1rem 0.3rem;border-radius:2px}
+.up-prog{display:none;margin-top:0.5rem}
+.up-bar{height:2px;background:var(--border);border-radius:1px;overflow:hidden}
+.up-fill{height:100%;background:var(--red);width:0;transition:width 0.3s}
+.up-lbl{font-size:0.65rem;color:var(--muted);margin-top:0.25rem;font-family:var(--font-h)}
+.form-acts{display:flex;gap:0.65rem;justify-content:flex-end;margin-top:1.75rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+/* CSV Panel */
+#csv-panel{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:1000;backdrop-filter:blur(6px);padding:1rem;overflow-y:auto}
+#csv-panel.open{display:flex;align-items:flex-start;justify-content:center}
+.csv-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:2rem;width:100%;max-width:900px;margin:auto}
+.csv-card h2{font-family:var(--font-h);font-size:1.1rem;font-weight:800;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:0.25rem}
+.csv-card p{font-size:0.78rem;color:var(--muted);margin-bottom:1.5rem}
+.csv-drop{border:1.5px dashed var(--border);border-radius:var(--r);padding:2rem;text-align:center;cursor:pointer;transition:all 0.2s;margin-bottom:1.5rem}
+.csv-drop:hover{border-color:rgba(255,255,255,0.2);background:rgba(255,255,255,0.02)}
+.csv-drop p{color:var(--muted);font-size:0.82rem}
+.csv-drop span{color:var(--red-l)}
+#csv-file-in{display:none}
+.csv-preview-wrap{overflow-x:auto;max-height:400px;margin-bottom:1.25rem;display:none}
+.csv-preview{font-size:0.72rem;color:var(--text)}
+.csv-actions{display:flex;gap:0.65rem;justify-content:flex-end}
+/* Delete confirm */
+#del-dialog{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:2000;backdrop-filter:blur(4px);align-items:center;justify-content:center}
+#del-dialog.open{display:flex}
+.del-box{background:var(--surface);border:1px solid var(--red-b);border-radius:var(--r);padding:2rem;max-width:380px;width:100%}
+.del-box h3{font-family:var(--font-h);font-size:1rem;font-weight:800;text-transform:uppercase;margin-bottom:0.5rem}
+.del-box p{color:var(--muted);font-size:0.82rem;margin-bottom:1.5rem}
+.del-acts{display:flex;gap:0.65rem;justify-content:flex-end}
+/* Toast */
+#toast{position:fixed;bottom:1.5rem;right:1.5rem;background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:0.75rem 1.2rem;font-size:0.82rem;z-index:9000;transform:translateY(5rem);opacity:0;transition:all 0.3s;pointer-events:none;max-width:300px}
+#toast.show{transform:translateY(0);opacity:1}
+#toast.ok{border-color:rgba(34,197,94,0.3)}
+#toast.err{border-color:var(--red-b)}
+/* Loader */
+.ld{display:flex;align-items:center;gap:0.6rem;color:var(--muted);font-size:0.78rem;padding:2rem;font-family:var(--font-h);letter-spacing:0.08em;text-transform:uppercase}
+.spin{width:16px;height:16px;border:1.5px solid var(--border);border-top-color:var(--red);border-radius:50%;animation:sp 0.6s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+/* Responsive */
+@media(max-width:768px){
+  .sidebar{display:none}
+  .main-area{padding:1.25rem}
+  .fg{grid-template-columns:1fr}
+  .stat-row{grid-template-columns:1fr 1fr}
+  table thead{display:none}
+  table,tbody,tr,td{display:block}
+  tr{background:var(--card);border-radius:var(--r);margin-bottom:0.65rem;padding:0.75rem;border:1px solid var(--border)}
+  td{padding:0.25rem 0;border:none}
+  td::before{content:attr(data-l);font-size:0.6rem;font-family:var(--font-h);color:var(--dim);text-transform:uppercase;display:block;margin-bottom:0.15rem}
+  .tbl-wrap{background:transparent;border:none}
+}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login">
+  <div class="login-box">
+    <div class="login-logo">LI ZHENG <em>AUTO</em></div>
+    <div class="login-sub">Admin Panel · Staff Only</div>
+    <label>Password</label>
+    <input type="password" id="pwd" placeholder="Enter admin password" />
+    <button class="btn-login" onclick="doLogin()">Sign In →</button>
+    <div class="login-err" id="login-err">Incorrect password. Try again.</div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sb-brand"><div class="name">LI ZHENG <em>AUTO</em></div><div class="tag">Admin · v1.0</div></div>
+    <nav class="sb-nav">
+      <div class="sb-item on" onclick="nav('dashboard')" id="sb-dashboard">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+        Dashboard
+      </div>
+      <div class="sb-item" onclick="nav('cars')" id="sb-cars">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path d="M5 17H3a2 2 0 01-2-2V9a2 2 0 012-2h1l3-4h8l3 4h1a2 2 0 012 2v6a2 2 0 01-2 2h-2M8 17h8"/><circle cx="8" cy="17" r="2"/><circle cx="16" cy="17" r="2"/></svg>
+        Cars
+      </div>
+      <div class="sb-item" onclick="nav('parts')" id="sb-parts">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>
+        Spare Parts
+      </div>
+      <div class="sb-item" onclick="nav('inquiries')" id="sb-inquiries">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2v10z"/></svg>
+        Inquiries
+      </div>
+    </nav>
+    <div class="sb-footer">
+      <button class="logout-btn" onclick="doLogout()">
+        <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+        Sign out
+      </button>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main-area">
+
+    <!-- DASHBOARD -->
+    <div class="view on" id="view-dashboard">
+      <div class="pg-hd"><h1>Dashboard</h1><p>Overview of inventory and activity</p></div>
+      <div class="stat-row">
+        <div class="stat-card"><div class="stat-lbl">Total Cars</div><div class="stat-val red" id="ds-total">—</div></div>
+        <div class="stat-card"><div class="stat-lbl">Available</div><div class="stat-val green" id="ds-avail">—</div></div>
+        <div class="stat-card"><div class="stat-lbl">Sold</div><div class="stat-val" id="ds-sold">—</div></div>
+        <div class="stat-card"><div class="stat-lbl">Featured</div><div class="stat-val" id="ds-feat">—</div></div>
+        <div class="stat-card"><div class="stat-lbl">Spare Parts</div><div class="stat-val" id="ds-parts">—</div></div>
+        <div class="stat-card"><div class="stat-lbl">Inquiries</div><div class="stat-val" id="ds-inq">—</div></div>
+      </div>
+      <div style="margin-bottom:1.25rem;display:flex;align-items:center;justify-content:space-between">
+        <span style="font-family:var(--font-h);font-size:0.72rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted)">Recent Listings</span>
+        <button class="btn btn-red" onclick="openAddCar()">
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+          Add Car
+        </button>
+      </div>
+      <div class="tbl-wrap" id="ds-tbl"><div class="ld"><div class="spin"></div>Loading…</div></div>
+    </div>
+
+    <!-- CARS -->
+    <div class="view" id="view-cars">
+      <div class="pg-hd"><h1>Cars</h1><p>Manage all vehicle listings</p></div>
+      <div class="toolbar">
+        <input type="text" id="car-search" placeholder="Search make or model…" oninput="filterCarsAdmin()" />
+        <select id="car-status-f" onchange="filterCarsAdmin()">
+          <option value="">All Status</option>
+          <option value="available">Available</option>
+          <option value="sold">Sold</option>
+          <option value="reserved">Reserved</option>
+        </select>
+        <select id="car-make-f" onchange="filterCarsAdmin()">
+          <option value="">All Makes</option>
+          <option>BYD</option><option>Chery</option><option>Haval</option>
+          <option>GWM</option><option>MG</option>
+        </select>
+        <button class="btn btn-border" onclick="openCSV()">
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+          Import CSV
+        </button>
+        <button class="btn btn-red" onclick="openAddCar()">
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+          Add Car
+        </button>
+      </div>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Image</th><th>Make / Model</th><th>Year</th><th>Price</th><th>Status</th><th>Featured</th><th>Views</th><th>Actions</th></tr></thead>
+          <tbody id="cars-tbody"><tr class="empty-row"><td colspan="8"><div class="ld"><div class="spin"></div>Loading…</div></td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- PARTS -->
+    <div class="view" id="view-parts">
+      <div class="pg-hd"><h1>Spare Parts</h1><p>Manage parts catalog</p></div>
+      <div class="toolbar">
+        <input type="text" id="part-search" placeholder="Search parts…" oninput="filterPartsAdmin()" />
+        <select id="part-cat-f" onchange="filterPartsAdmin()">
+          <option value="">All Categories</option>
+          <option>Engine</option><option>Body</option><option>Electrical</option>
+          <option>Brakes</option><option>Suspension</option><option>Interior</option>
+        </select>
+        <button class="btn btn-red" onclick="openAddPart()">
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+          Add Part
+        </button>
+      </div>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Name</th><th>Category</th><th>Price</th><th>Compatible</th><th>In Stock</th><th>Actions</th></tr></thead>
+          <tbody id="parts-tbody"><tr class="empty-row"><td colspan="6"><div class="ld"><div class="spin"></div>Loading…</div></td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- INQUIRIES -->
+    <div class="view" id="view-inquiries">
+      <div class="pg-hd"><h1>Inquiries</h1><p>All contact and booking requests</p></div>
+      <div class="toolbar">
+        <select id="inq-type-f" onchange="filterInqAdmin()">
+          <option value="">All Types</option>
+          <option value="general">General</option>
+          <option value="car">Car</option>
+          <option value="test_drive">Test Drive</option>
+          <option value="parts">Parts</option>
+        </select>
+      </div>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Date</th><th>Type</th><th>Name</th><th>Phone</th><th>Car / Part</th><th>Message</th><th>Actions</th></tr></thead>
+          <tbody id="inq-tbody"><tr class="empty-row"><td colspan="7"><div class="ld"><div class="spin"></div>Loading…</div></td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- CAR FORM PANEL -->
+<div id="form-panel">
+  <div class="form-card">
+    <h2 id="form-title">Add New Car</h2>
+    <div class="fsub" id="form-sub">Fill all fields. Upload as many photos as you want.</div>
+    <input type="hidden" id="edit-id"/>
+    <div class="fg">
+      <div class="f-item"><label>Make <em>*</em></label>
+        <select id="f-make">
+          <option value="">Select…</option>
+          <option>BYD</option><option>Chery</option><option>Haval</option>
+          <option>GWM</option><option>MG</option><option>Dongfeng</option><option>Other</option>
+        </select>
+      </div>
+      <div class="f-item"><label>Model <em>*</em></label><input id="f-model" placeholder="e.g. Atto 3"/></div>
+      <div class="f-item"><label>Year <em>*</em></label><input id="f-year" type="number" placeholder="2024"/></div>
+      <div class="f-item"><label>Price (RWF) <em>*</em></label><input id="f-price" type="number" placeholder="32000000" oninput="autoLabel()"/></div>
+      <div class="f-item"><label>Price Label <em>*</em></label><input id="f-price-label" placeholder="RWF 32,000,000"/></div>
+      <div class="f-item"><label>Body Type</label>
+        <select id="f-body"><option value="">Select…</option><option>SUV</option><option>Sedan</option><option>Hatchback</option><option>Pickup</option><option>Van</option></select>
+      </div>
+      <div class="f-item"><label>Fuel Type</label>
+        <select id="f-fuel"><option value="">Select…</option><option>Electric</option><option>Hybrid</option><option>Petrol</option><option>Diesel</option></select>
+      </div>
+      <div class="f-item"><label>Transmission</label>
+        <select id="f-trans"><option value="">Select…</option><option>Automatic</option><option>Manual</option></select>
+      </div>
+      <div class="f-item"><label>Engine</label><input id="f-engine" placeholder="e.g. 1.5T, Electric 150kW"/></div>
+      <div class="f-item"><label>Color</label><input id="f-color" placeholder="e.g. Pearl White"/></div>
+      <div class="f-item"><label>Seats</label><input id="f-seats" type="number" placeholder="5"/></div>
+      <div class="f-item"><label>Mileage (km) — 0 = New</label><input id="f-mileage" type="number" value="0"/></div>
+      <div class="f-item"><label>Status <em>*</em></label>
+        <select id="f-status"><option value="available">Available</option><option value="sold">Sold</option><option value="reserved">Reserved</option></select>
+      </div>
+      <div class="f-item"><label>Featured on Homepage?</label>
+        <select id="f-featured"><option value="false">No</option><option value="true">Yes</option></select>
+      </div>
+      <div class="f-item f-full"><label>Walkround Video URL (YouTube / direct)</label><input id="f-walkround" placeholder="https://www.youtube.com/watch?v=..."/></div>
+      <div class="f-item f-full"><label>Description</label><textarea id="f-desc" placeholder="Full vehicle description…"></textarea></div>
+      <div class="f-item f-full">
+        <label>Features / Amenities</label>
+        <div class="tags-wrap" id="tags-wrap" onclick="document.getElementById('tags-input').focus()">
+          <input id="tags-input" placeholder="Type feature, press Enter…" onkeydown="onTagKey(event)"/>
+        </div>
+        <div class="tags-hint">e.g. 420km Range · Panoramic Sunroof · ADAS Level 2</div>
+      </div>
+      <div class="f-item f-full">
+        <label>Photos — Drag to reorder · Upload unlimited</label>
+        <div class="upload-zone" id="upload-zone" onclick="document.getElementById('file-in').click()" ondragover="onDragOver(event)" ondrop="onDrop(event)" ondragleave="onDragLeave()">
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" style="width:28px;height:28px;color:var(--muted);margin:0 auto 0.5rem"><path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+          <p>Drop photos here or <span>click to browse</span></p>
+          <p class="hint">Any number of images · JPEG, PNG, WebP</p>
+        </div>
+        <input type="file" id="file-in" accept="image/*" multiple onchange="onFileSelect(event)"/>
+        <div class="img-grid" id="img-grid"></div>
+        <div class="up-prog" id="up-prog"><div class="up-bar"><div class="up-fill" id="up-fill"></div></div><div class="up-lbl" id="up-lbl"></div></div>
+      </div>
+    </div>
+    <div class="form-acts">
+      <button class="btn btn-border" onclick="closeForm()">Cancel</button>
+      <button class="btn btn-red" id="save-btn" onclick="saveCar()">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><path d="M5 13l4 4L19 7"/></svg>
+        Save Car
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- PART FORM (reuses same panel structure) -->
+<div id="part-panel" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:1000;backdrop-filter:blur(6px);padding:1rem;overflow-y:auto;align-items:flex-start;justify-content:center">
+  <div class="form-card" style="max-width:560px">
+    <h2 id="part-form-title">Add Spare Part</h2>
+    <div class="fsub">Fill in the part details below.</div>
+    <input type="hidden" id="pe-id"/>
+    <div class="fg">
+      <div class="f-item f-full"><label>Part Name <em>*</em></label><input id="pe-name" placeholder="e.g. BYD Atto 3 Front Bumper"/></div>
+      <div class="f-item"><label>Category <em>*</em></label>
+        <select id="pe-cat"><option value="">Select…</option><option>Engine</option><option>Body</option><option>Electrical</option><option>Brakes</option><option>Suspension</option><option>Interior</option></select>
+      </div>
+      <div class="f-item"><label>Price (RWF)</label><input id="pe-price" type="number" placeholder="850000" oninput="autoPartLabel()"/></div>
+      <div class="f-item f-full"><label>Price Label</label><input id="pe-price-label" placeholder="RWF 850,000"/></div>
+      <div class="f-item f-full"><label>Compatible Models</label><input id="pe-compat" placeholder="e.g. BYD Atto 3 2022-2024, Chery Tiggo 8"/></div>
+      <div class="f-item f-full"><label>Description</label><textarea id="pe-desc" placeholder="Part details…"></textarea></div>
+      <div class="f-item"><label>In Stock?</label>
+        <select id="pe-stock"><option value="true">Yes — In Stock</option><option value="false">No — Out of Stock</option></select>
+      </div>
+    </div>
+    <div class="form-acts">
+      <button class="btn btn-border" onclick="closePartForm()">Cancel</button>
+      <button class="btn btn-red" id="save-part-btn" onclick="savePart()">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><path d="M5 13l4 4L19 7"/></svg>
+        Save Part
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- CSV PANEL -->
+<div id="csv-panel">
+  <div class="csv-card">
+    <h2>Bulk Import Cars (CSV)</h2>
+    <p>Download the template, fill it in Excel or Google Sheets, then upload here. All cars will be inserted into the database instantly.</p>
+    <div style="display:flex;gap:0.65rem;margin-bottom:1.5rem">
+      <button class="btn btn-border" onclick="downloadCSVTemplate()">⬇ Download Template</button>
+      <button class="btn btn-border" onclick="document.getElementById('csv-file-in').click()">📁 Upload CSV</button>
+      <input type="file" id="csv-file-in" accept=".csv" onchange="parseCSV(event)" style="display:none"/>
+    </div>
+    <div class="csv-preview-wrap" id="csv-preview-wrap">
+      <div style="font-family:var(--font-h);font-size:0.65rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:0.75rem">Preview (<span id="csv-count">0</span> rows)</div>
+      <div class="tbl-wrap" style="max-height:320px;overflow-y:auto">
+        <table class="csv-preview" id="csv-table"><thead></thead><tbody></tbody></table>
+      </div>
+    </div>
+    <div class="csv-actions">
+      <button class="btn btn-border" onclick="closeCSV()">Cancel</button>
+      <button class="btn btn-red" id="csv-confirm-btn" style="display:none" onclick="confirmCSV()">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><path d="M5 13l4 4L19 7"/></svg>
+        Import All
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- DELETE CONFIRM -->
+<div id="del-dialog">
+  <div class="del-box">
+    <h3>Confirm Delete</h3>
+    <p id="del-msg">This action cannot be undone.</p>
+    <div class="del-acts">
+      <button class="btn btn-border" onclick="closeDel()">Cancel</button>
+      <button class="btn btn-danger" id="del-ok">Delete</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div id="toast"></div>
+
+<script>
+/* ══ CONFIG ══════════════════════════════════════════════ */
+const SUPABASE_URL   = 'https://kzwzmzcdbvqistjmlbip.supabase.co';
+const SUPABASE_SVC   = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt6d3ptemNkYnZxaXN0am1sYmlwIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4MDE0MzYwMCwiZXhwIjoyMDk1NzE5NjAwfQ.U2jYbK5lY6-8N16AE3aDVOS9wLWYBdTi_tgHEttGfcQ';
+const ADMIN_PWD      = 'LIZHENG_ADMIN_2026!';
+const BUCKET         = 'car-images';
+
+let db = null;
+function initDB(){if(SUPABASE_URL==='YOUR_SUPABASE_URL')return null;return supabase.createClient(SUPABASE_URL,SUPABASE_SVC)}
+
+/* ══ AUTH ════════════════════════════════════════════════ */
+document.getElementById('pwd').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin()});
+function doLogin(){
+  const v=document.getElementById('pwd').value;
+  if(v===ADMIN_PWD){
+    sessionStorage.setItem('lz_admin','1');
+    document.getElementById('login').classList.add('hide');
+    document.getElementById('app').classList.add('show');
+    db=initDB();loadDashboard();
+  }else{
+    document.getElementById('login-err').classList.add('show');
+    document.getElementById('pwd').value='';
+  }
+}
+function doLogout(){sessionStorage.removeItem('lz_admin');location.reload()}
+if(sessionStorage.getItem('lz_admin')==='1'){document.getElementById('login').classList.add('hide');document.getElementById('app').classList.add('show');db=initDB()}
+
+/* ══ NAV ═════════════════════════════════════════════════ */
+let curView='dashboard';
+function nav(v){
+  ['dashboard','cars','parts','inquiries'].forEach(n=>{
+    document.getElementById('view-'+n).classList.toggle('on',n===v);
+    document.getElementById('sb-'+n).classList.toggle('on',n===v);
+  });
+  curView=v;
+  if(v==='dashboard')loadDashboard();
+  if(v==='cars')loadCarsAdmin();
+  if(v==='parts')loadPartsAdmin();
+  if(v==='inquiries')loadInqAdmin();
+}
+window.addEventListener('DOMContentLoaded',()=>{if(sessionStorage.getItem('lz_admin')==='1')loadDashboard()});
+
+/* ══ DATA ════════════════════════════════════════════════ */
+let allCars=[],allParts=[],allInqs=[];
+async function fetchAll(){
+  if(!db){allCars=demo();return}
+  const{data}=await db.from('cars').select('*').order('created_at',{ascending:false});
+  allCars=data||[];
+}
+async function fetchParts(){
+  if(!db){allParts=[];return}
+  const{data}=await db.from('spare_parts').select('*').order('created_at',{ascending:false});
+  allParts=data||[];
+}
+async function fetchInqs(){
+  if(!db){allInqs=[];return}
+  const{data}=await db.from('inquiries').select('*').order('created_at',{ascending:false});
+  allInqs=data||[];
+}
+
+/* ══ DASHBOARD ═══════════════════════════════════════════ */
+async function loadDashboard(){
+  await Promise.all([fetchAll(),fetchParts(),fetchInqs()]);
+  document.getElementById('ds-total').textContent=allCars.length;
+  document.getElementById('ds-avail').textContent=allCars.filter(c=>c.status==='available').length;
+  document.getElementById('ds-sold').textContent=allCars.filter(c=>c.status==='sold').length;
+  document.getElementById('ds-feat').textContent=allCars.filter(c=>c.featured).length;
+  document.getElementById('ds-parts').textContent=allParts.length;
+  document.getElementById('ds-inq').textContent=allInqs.length;
+  renderCarsTable(allCars.slice(0,8),document.getElementById('ds-tbl'),true);
+}
+
+/* ══ CARS ════════════════════════════════════════════════ */
+async function loadCarsAdmin(){
+  await fetchAll();
+  filterCarsAdmin();
+}
+function filterCarsAdmin(){
+  const q=document.getElementById('car-search').value.toLowerCase();
+  const s=document.getElementById('car-status-f').value;
+  const m=document.getElementById('car-make-f').value;
+  const f=allCars.filter(c=>{
+    return(!q||(c.make+' '+c.model).toLowerCase().includes(q))&&
+           (!s||c.status===s)&&(!m||c.make===m);
+  });
+  renderCarsTable(f,null,false);
+}
+function renderCarsTable(cars,target,compact){
+  const tbody=target?target.querySelector('tbody')||target:document.getElementById('cars-tbody');
+  if(!cars.length){tbody.innerHTML=`<tr class="empty-row"><td colspan="8" style="text-align:center;padding:2.5rem;color:var(--muted)">No cars found.</td></tr>`;return}
+  tbody.innerHTML=cars.map(c=>{
+    const img=c.images?.[0];
+    return`<tr>
+      <td data-l="Image">${img?`<img src="${h(img)}" class="thumb" loading="lazy"/>`:`<div class="thumb-ph">NO IMG</div>`}</td>
+      <td data-l="Make/Model" style="font-weight:600">${h(c.make)} ${h(c.model)}</td>
+      <td data-l="Year">${c.year}</td>
+      <td data-l="Price" style="font-family:var(--font-h);font-weight:700;color:var(--red-l)">${h(c.price_label||'')}</td>
+      <td data-l="Status"><span class="badge badge-${c.status}">${c.status}</span></td>
+      <td data-l="Featured"><div class="toggle${c.featured?' on':''}" onclick="toggleFeat('${c.id}',${c.featured})"></div></td>
+      <td data-l="Views">${c.views||0}</td>
+      <td data-l="Actions"><div class="act-row">
+        <button class="icon-btn" onclick='openEditCar(${JSON.stringify(JSON.stringify(c))})' title="Edit">
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+        </button>
+        <button class="icon-btn del" onclick="confirmDel('car','${c.id}','${h(c.make+' '+c.model)}')" title="Delete">
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+        </button>
+      </div></td>
+    </tr>`;
+  }).join('');
+  if(!target)return;
+  // Wrap with table if dashboard shortcut
+  if(compact){
+    target.innerHTML=`<table><thead><tr><th>Image</th><th>Make/Model</th><th>Year</th><th>Price</th><th>Status</th><th>Featured</th><th>Views</th><th>Actions</th></tr></thead><tbody>${tbody.innerHTML||''}</tbody></table>`;
+  }
+}
+
+/* Toggle featured */
+async function toggleFeat(id,cur){
+  if(db){const{error}=await db.from('cars').update({featured:!cur}).eq('id',id);if(error){toast('Update failed','err');return}}
+  const c=allCars.find(c=>c.id===id);if(c)c.featured=!cur;
+  if(curView==='dashboard')loadDashboard();else filterCarsAdmin();
+  toast(!cur?'Marked as featured':'Removed from featured','ok');
+}
+
+/* ══ CAR FORM ════════════════════════════════════════════ */
+let editingId=null,pendingFiles=[],existingImgs=[];
+
+function openAddCar(){
+  editingId=null;pendingFiles=[];existingImgs=[];
+  document.getElementById('form-title').textContent='Add New Car';
+  document.getElementById('form-sub').textContent='Fill all fields. Upload as many photos as you want.';
+  clearCarForm();
+  document.getElementById('form-panel').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function openEditCar(jsonStr){
+  const c=JSON.parse(jsonStr);
+  editingId=c.id;pendingFiles=[];existingImgs=(c.images||[]).map(url=>({url,local:false}));
+  document.getElementById('form-title').textContent='Edit Car';
+  document.getElementById('form-sub').textContent=`Editing: ${c.make} ${c.model} ${c.year}`;
+  fillCarForm(c);
+  document.getElementById('form-panel').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeForm(){document.getElementById('form-panel').classList.remove('open');document.body.style.overflow='';pendingFiles=[];existingImgs=[]}
+
+function clearCarForm(){
+  ['f-make','f-body','f-fuel','f-trans','f-status','f-featured'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=''});
+  document.getElementById('f-status').value='available';
+  document.getElementById('f-featured').value='false';
+  ['f-model','f-year','f-price','f-price-label','f-engine','f-color','f-seats','f-mileage','f-walkround','f-desc'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=''});
+  document.getElementById('f-mileage').value='0';
+  document.getElementById('edit-id').value='';
+  document.getElementById('tags-wrap').querySelectorAll('.ftag').forEach(t=>t.remove());
+  renderImgGrid();
+}
+function fillCarForm(c){
+  clearCarForm();
+  document.getElementById('edit-id').value=c.id;
+  ['make','model','year','color','engine_cc','seats','mileage','description'].forEach(k=>{
+    const el=document.getElementById('f-'+k)||document.getElementById('f-engine')||null;
+    const map={'engine_cc':'f-engine','description':'f-desc'};
+    const id=map[k]||'f-'+k;
+    const el2=document.getElementById(id);
+    if(el2)el2.value=c[k]!=null?c[k]:'';
+  });
+  document.getElementById('f-make').value=c.make||'';
+  document.getElementById('f-model').value=c.model||'';
+  document.getElementById('f-year').value=c.year||'';
+  document.getElementById('f-price').value=c.price||'';
+  document.getElementById('f-price-label').value=c.price_label||'';
+  document.getElementById('f-body').value=c.body_type||'';
+  document.getElementById('f-fuel').value=c.fuel_type||'';
+  document.getElementById('f-trans').value=c.transmission||'';
+  document.getElementById('f-engine').value=c.engine_cc||'';
+  document.getElementById('f-color').value=c.color||'';
+  document.getElementById('f-seats').value=c.seats!=null?c.seats:'';
+  document.getElementById('f-mileage').value=c.mileage!=null?c.mileage:0;
+  document.getElementById('f-status').value=c.status||'available';
+  document.getElementById('f-featured').value=c.featured?'true':'false';
+  document.getElementById('f-walkround').value=c.walkround_url||'';
+  document.getElementById('f-desc').value=c.description||'';
+  (c.features||[]).forEach(addTag);
+  renderImgGrid();
+  initSortable();
+}
+function autoLabel(){
+  const v=parseInt(document.getElementById('f-price').value)||0;
+  if(!v)return;
+  document.getElementById('f-price-label').value='RWF '+v.toLocaleString();
+}
+/* Tags */
+function onTagKey(e){if(e.key==='Enter'){e.preventDefault();const v=e.target.value.trim();if(v){addTag(v);e.target.value=''}}}
+function addTag(text){
+  const wrap=document.getElementById('tags-wrap');
+  const inp=document.getElementById('tags-input');
+  const t=document.createElement('div');t.className='ftag';
+  t.innerHTML=`${h(text)}<button type="button" onclick="this.parentNode.remove()">×</button>`;
+  wrap.insertBefore(t,inp);
+}
+function getTags(){return[...document.getElementById('tags-wrap').querySelectorAll('.ftag')].map(t=>t.textContent.trim().slice(0,-1))}
+/* Images */
+function onFileSelect(e){processFiles([...e.target.files]);e.target.value=''}
+function onDragOver(e){e.preventDefault();document.getElementById('upload-zone').classList.add('drag')}
+function onDragLeave(){document.getElementById('upload-zone').classList.remove('drag')}
+function onDrop(e){e.preventDefault();document.getElementById('upload-zone').classList.remove('drag');processFiles([...e.dataTransfer.files].filter(f=>f.type.startsWith('image/')))}
+function processFiles(files){
+  files.forEach(f=>{
+    const r=new FileReader();
+    r.onload=ev=>{existingImgs.push({url:ev.target.result,local:true,file:f});renderImgGrid();initSortable()};
+    r.readAsDataURL(f);
+  });
+}
+function renderImgGrid(){
+  const g=document.getElementById('img-grid');
+  g.innerHTML=existingImgs.map((img,i)=>`
+    <div class="img-item" data-idx="${i}">
+      <img src="${img.url}" />
+      <button class="rm-img" onclick="removeImg(${i})">×</button>
+      <span class="order-badge">${i+1}</span>
+    </div>`).join('');
+}
+function removeImg(i){existingImgs.splice(i,1);renderImgGrid();initSortable()}
+function initSortable(){
+  const g=document.getElementById('img-grid');
+  if(g._sortable)g._sortable.destroy();
+  g._sortable=Sortable.create(g,{
+    animation:150,
+    onEnd:()=>{
+      const newOrder=[...g.querySelectorAll('.img-item')].map(el=>existingImgs[parseInt(el.dataset.idx)]);
+      existingImgs=newOrder;
+      renderImgGrid();initSortable();
+    }
+  });
+}
+async function uploadAllImages(){
+  if(!db)return existingImgs.filter(i=>!i.local).map(i=>i.url);
+  const result=existingImgs.filter(i=>!i.local).map(i=>i.url);
+  const toUpload=existingImgs.filter(i=>i.local);
+  if(!toUpload.length)return result;
+  const prog=document.getElementById('up-prog');
+  const fill=document.getElementById('up-fill');
+  const lbl=document.getElementById('up-lbl');
+  prog.style.display='block';
+  for(let i=0;i<toUpload.length;i++){
+    const item=toUpload[i];
+    const fname=`${Date.now()}-${i}-${item.file.name.replace(/\s+/g,'_')}`;
+    fill.style.width=Math.round(i/toUpload.length*100)+'%';
+    lbl.textContent=`Uploading ${i+1} of ${toUpload.length}…`;
+    const{data,error}=await db.storage.from(BUCKET).upload(fname,item.file,{contentType:item.file.type,upsert:false});
+    if(!error){const{data:pub}=db.storage.from(BUCKET).getPublicUrl(fname);if(pub?.publicUrl)result.push(pub.publicUrl)}
+  }
+  fill.style.width='100%';lbl.textContent='Upload complete!';
+  setTimeout(()=>{prog.style.display='none'},1500);
+  return result;
+}
+async function saveCar(){
+  const btn=document.getElementById('save-btn');
+  const make=document.getElementById('f-make').value;
+  const model=document.getElementById('f-model').value.trim();
+  const year=parseInt(document.getElementById('f-year').value)||0;
+  const price=parseFloat(document.getElementById('f-price').value)||0;
+  const priceLabel=document.getElementById('f-price-label').value.trim();
+  if(!make||!model||!year||!price||!priceLabel){toast('Fill in all required fields','err');return}
+  btn.textContent='Saving…';btn.disabled=true;
+  const images=await uploadAllImages();
+  const payload={make,model,year,price,price_label:priceLabel,
+    body_type:document.getElementById('f-body').value||null,
+    fuel_type:document.getElementById('f-fuel').value||null,
+    transmission:document.getElementById('f-trans').value||null,
+    engine_cc:document.getElementById('f-engine').value.trim()||null,
+    color:document.getElementById('f-color').value.trim()||null,
+    seats:document.getElementById('f-seats').value?parseInt(document.getElementById('f-seats').value):null,
+    mileage:parseInt(document.getElementById('f-mileage').value)||0,
+    description:document.getElementById('f-desc').value.trim()||null,
+    features:getTags(),images,
+    walkround_url:document.getElementById('f-walkround').value.trim()||null,
+    status:document.getElementById('f-status').value,
+    featured:document.getElementById('f-featured').value==='true',
+  };
+  btn.textContent='Save Car';btn.disabled=false;
+  if(!db){
+    if(editingId){const ix=allCars.findIndex(c=>c.id===editingId);if(ix>-1)allCars[ix]={...allCars[ix],...payload}}
+    else allCars.unshift({id:'demo-'+Date.now(),...payload,views:0,created_at:new Date().toISOString()});
+    closeForm();toast(editingId?'Car updated!':'Car added!','ok');
+    if(curView==='dashboard')loadDashboard();else filterCarsAdmin();return;
+  }
+  let error;
+  if(editingId){({error}=await db.from('cars').update(payload).eq('id',editingId))}
+  else{({error}=await db.from('cars').insert(payload))}
+  if(error){toast('Save failed: '+error.message,'err');return}
+  closeForm();toast(editingId?'Car updated!':'Car added!','ok');
+  await fetchAll();
+  if(curView==='dashboard')loadDashboard();else filterCarsAdmin();
+}
+
+/* ══ PARTS ═══════════════════════════════════════════════ */
+async function loadPartsAdmin(){await fetchParts();filterPartsAdmin()}
+function filterPartsAdmin(){
+  const q=document.getElementById('part-search').value.toLowerCase();
+  const cat=document.getElementById('part-cat-f').value;
+  const f=allParts.filter(p=>(!q||p.name.toLowerCase().includes(q))&&(!cat||p.category===cat));
+  const tbody=document.getElementById('parts-tbody');
+  if(!f.length){tbody.innerHTML=`<tr class="empty-row"><td colspan="6" style="text-align:center;padding:2.5rem;color:var(--muted)">No parts found.</td></tr>`;return}
+  tbody.innerHTML=f.map(p=>`<tr>
+    <td data-l="Name" style="font-weight:500">${h(p.name)}</td>
+    <td data-l="Category"><span class="badge badge-sale">${h(p.category)}</span></td>
+    <td data-l="Price" style="font-family:var(--font-h);color:var(--red-l)">${p.price_label?h(p.price_label):'—'}</td>
+    <td data-l="Compatible" style="color:var(--muted);font-size:0.75rem">${p.compatible?h(p.compatible):'—'}</td>
+    <td data-l="Stock"><div class="toggle${p.in_stock?' on':''}" onclick="toggleStock('${p.id}',${p.in_stock})"></div></td>
+    <td data-l="Actions"><div class="act-row">
+      <button class="icon-btn" onclick='openEditPart(${JSON.stringify(JSON.stringify(p))})'>
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+      </button>
+      <button class="icon-btn del" onclick="confirmDel('part','${p.id}','${h(p.name)}')">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+      </button>
+    </div></td>
+  </tr>`).join('');
+}
+async function toggleStock(id,cur){
+  if(db){await db.from('spare_parts').update({in_stock:!cur}).eq('id',id)}
+  const p=allParts.find(p=>p.id===id);if(p)p.in_stock=!cur;
+  filterPartsAdmin();toast(!cur?'Marked in stock':'Marked out of stock','ok');
+}
+let editingPartId=null;
+function openAddPart(){editingPartId=null;clearPartForm();document.getElementById('part-form-title').textContent='Add Spare Part';document.getElementById('part-panel').style.display='flex';document.body.style.overflow='hidden'}
+function openEditPart(js){const p=JSON.parse(js);editingPartId=p.id;fillPartForm(p);document.getElementById('part-form-title').textContent='Edit Part';document.getElementById('part-panel').style.display='flex';document.body.style.overflow='hidden'}
+function closePartForm(){document.getElementById('part-panel').style.display='none';document.body.style.overflow=''}
+function clearPartForm(){['pe-name','pe-price','pe-price-label','pe-compat','pe-desc'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=''});document.getElementById('pe-cat').value='';document.getElementById('pe-stock').value='true';document.getElementById('pe-id').value=''}
+function fillPartForm(p){clearPartForm();document.getElementById('pe-id').value=p.id;document.getElementById('pe-name').value=p.name||'';document.getElementById('pe-cat').value=p.category||'';document.getElementById('pe-price').value=p.price||'';document.getElementById('pe-price-label').value=p.price_label||'';document.getElementById('pe-compat').value=p.compatible||'';document.getElementById('pe-desc').value=p.description||'';document.getElementById('pe-stock').value=p.in_stock?'true':'false'}
+function autoPartLabel(){const v=parseInt(document.getElementById('pe-price').value)||0;if(v)document.getElementById('pe-price-label').value='RWF '+v.toLocaleString()}
+async function savePart(){
+  const btn=document.getElementById('save-part-btn');
+  const name=document.getElementById('pe-name').value.trim();
+  const cat=document.getElementById('pe-cat').value;
+  if(!name||!cat){toast('Name and category required','err');return}
+  btn.textContent='Saving…';btn.disabled=true;
+  const payload={name,category:cat,price:parseFloat(document.getElementById('pe-price').value)||null,price_label:document.getElementById('pe-price-label').value.trim()||null,compatible:document.getElementById('pe-compat').value.trim()||null,description:document.getElementById('pe-desc').value.trim()||null,in_stock:document.getElementById('pe-stock').value==='true'};
+  btn.textContent='Save Part';btn.disabled=false;
+  if(!db){editingPartId?Object.assign(allParts.find(p=>p.id===editingPartId),payload):allParts.unshift({id:'p-'+Date.now(),...payload,created_at:new Date().toISOString()});closePartForm();toast(editingPartId?'Part updated!':'Part added!','ok');filterPartsAdmin();return}
+  let error;
+  if(editingPartId){({error}=await db.from('spare_parts').update(payload).eq('id',editingPartId))}
+  else{({error}=await db.from('spare_parts').insert(payload))}
+  if(error){toast('Save failed: '+error.message,'err');return}
+  closePartForm();toast(editingPartId?'Part updated!':'Part added!','ok');await fetchParts();filterPartsAdmin();
+}
+
+/* ══ INQUIRIES ═══════════════════════════════════════════ */
+async function loadInqAdmin(){await fetchInqs();filterInqAdmin()}
+function filterInqAdmin(){
+  const type=document.getElementById('inq-type-f').value;
+  const f=allInqs.filter(i=>!type||i.type===type);
+  const tbody=document.getElementById('inq-tbody');
+  if(!f.length){tbody.innerHTML=`<tr class="empty-row"><td colspan="7" style="text-align:center;padding:2.5rem;color:var(--muted)">No inquiries yet.</td></tr>`;return}
+  tbody.innerHTML=f.map(i=>`<tr>
+    <td data-l="Date" style="font-size:0.75rem;color:var(--muted)">${fmtDate(i.created_at)}</td>
+    <td data-l="Type"><span class="badge badge-${i.type==='test_drive'?'rent':i.type==='car'?'sale':'land'}">${i.type}</span></td>
+    <td data-l="Name" style="font-weight:500">${h(i.name)}</td>
+    <td data-l="Phone"><a href="tel:${h(i.phone)}" style="color:var(--red-l)">${h(i.phone)}</a></td>
+    <td data-l="Car/Part" style="color:var(--muted);font-size:0.78rem">${i.car_name?h(i.car_name):'—'}</td>
+    <td data-l="Message" style="color:var(--muted);font-size:0.78rem;max-width:200px">${i.message?h(i.message.substring(0,80))+(i.message.length>80?'…':''):'—'}</td>
+    <td data-l="Actions">
+      <a href="https://wa.me/${(i.phone||'').replace(/\D/g,'')}?text=${encodeURIComponent('Hi '+i.name+', following up on your inquiry for Li Zheng Automobile.')}" target="_blank" class="btn btn-border" style="font-size:0.68rem;padding:0.3rem 0.65rem">WA</a>
+    </td>
+  </tr>`).join('');
+}
+
+/* ══ DELETE ══════════════════════════════════════════════ */
+let delType='',delId='';
+function confirmDel(type,id,name){
+  delType=type;delId=id;
+  document.getElementById('del-msg').textContent=`Delete "${name}"? This cannot be undone.`;
+  document.getElementById('del-dialog').classList.add('open');
+  document.getElementById('del-ok').onclick=doDel;
+}
+function closeDel(){document.getElementById('del-dialog').classList.remove('open');delType='';delId=''}
+async function doDel(){
+  const type=delType,id=delId;closeDel();
+  if(db){
+    const tbl=type==='car'?'cars':'spare_parts';
+    const{error}=await db.from(tbl).delete().eq('id',id);
+    if(error){toast('Delete failed: '+error.message,'err');return}
+  }
+  if(type==='car')allCars=allCars.filter(c=>c.id!==id);
+  else allParts=allParts.filter(p=>p.id!==id);
+  toast('Deleted successfully','ok');
+  if(curView==='dashboard')loadDashboard();
+  else if(type==='car')filterCarsAdmin();
+  else filterPartsAdmin();
+}
+
+/* ══ CSV IMPORT ══════════════════════════════════════════ */
+let csvRows=[];
+function openCSV(){csvRows=[];document.getElementById('csv-preview-wrap').style.display='none';document.getElementById('csv-confirm-btn').style.display='none';document.getElementById('csv-panel').classList.add('open');document.body.style.overflow='hidden'}
+function closeCSV(){document.getElementById('csv-panel').classList.remove('open');document.body.style.overflow='';csvRows=[]}
+function downloadCSVTemplate(){
+  const cols=['make','model','year','price','price_label','body_type','fuel_type','transmission','engine_cc','color','seats','mileage','description','walkround_url'];
+  const sample=['BYD','Atto 3','2024','32000000','RWF 32,000,000','SUV','Electric','Automatic','Electric 150kW','Pearl White','5','0','Electric compact SUV with 420km range',''];
+  const csv=cols.join(',')+'\n'+sample.join(',');
+  const a=document.createElement('a');a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv);a.download='lizheng-cars-template.csv';a.click();
+}
+function parseCSV(e){
+  const file=e.target.files[0];if(!file)return;
+  e.target.value='';
+  Papa.parse(file,{header:true,skipEmptyLines:true,complete:res=>{
+    csvRows=res.data.filter(r=>r.make&&r.model);
+    document.getElementById('csv-count').textContent=csvRows.length;
+    const table=document.getElementById('csv-table');
+    if(!csvRows.length){toast('No valid rows found','err');return}
+    const cols=Object.keys(csvRows[0]);
+    table.innerHTML=`<thead><tr>${cols.map(c=>`<th>${c}</th>`).join('')}</tr></thead><tbody>${csvRows.slice(0,5).map(r=>`<tr>${cols.map(c=>`<td>${h(r[c]||'')}</td>`).join('')}</tr>`).join('')}${csvRows.length>5?`<tr><td colspan="${cols.length}" style="text-align:center;color:var(--muted);padding:0.5rem">…and ${csvRows.length-5} more rows</td></tr>`:''}</tbody>`;
+    document.getElementById('csv-preview-wrap').style.display='block';
+    document.getElementById('csv-confirm-btn').style.display='inline-flex';
+  }});
+}
+async function confirmCSV(){
+  if(!csvRows.length)return;
+  const btn=document.getElementById('csv-confirm-btn');btn.textContent='Importing…';btn.disabled=true;
+  const rows=csvRows.map(r=>({
+    make:r.make||'Unknown',model:r.model||'Unknown',
+    year:parseInt(r.year)||new Date().getFullYear(),
+    price:parseFloat(r.price)||0,
+    price_label:r.price_label||'Call for price',
+    body_type:r.body_type||null,fuel_type:r.fuel_type||null,
+    transmission:r.transmission||null,engine_cc:r.engine_cc||null,
+    color:r.color||null,seats:r.seats?parseInt(r.seats):null,
+    mileage:parseInt(r.mileage)||0,description:r.description||null,
+    walkround_url:r.walkround_url||null,images:[],features:[],
+    status:'available',featured:false,views:0,
+  }));
+  if(db){const{error}=await db.from('cars').insert(rows);if(error){toast('Import failed: '+error.message,'err');btn.textContent='Import All';btn.disabled=false;return}}
+  else{rows.forEach(r=>allCars.unshift({id:'csv-'+Date.now()+Math.random(),...r,created_at:new Date().toISOString()}))}
+  btn.textContent='Import All';btn.disabled=false;
+  closeCSV();toast(`${rows.length} cars imported!`,'ok');
+  await fetchAll();
+  if(curView==='dashboard')loadDashboard();else filterCarsAdmin();
+}
+
+/* ══ UTILS ═══════════════════════════════════════════════ */
+function h(s){if(!s)return'';return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+function fmtDate(iso){if(!iso)return'—';const d=new Date(iso);return d.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'})}
+let toastT;
+function toast(msg,type=''){
+  const t=document.getElementById('toast');t.textContent=msg;
+  t.className='show '+(type==='ok'?'ok':type==='err'?'err':'');
+  clearTimeout(toastT);toastT=setTimeout(()=>t.className='',3200);
+}
+function demo(){return[
+  {id:'d1',make:'BYD',model:'Atto 3',year:2024,price:32000000,price_label:'RWF 32,000,000',body_type:'SUV',fuel_type:'Electric',transmission:'Automatic',color:'White',engine_cc:'150kW',seats:5,mileage:0,description:'Demo car.',features:['420km Range'],images:['https://images.unsplash.com/photo-1555215695-3004980ad54e?w=120&q=50'],status:'available',featured:true,views:12,created_at:new Date().toISOString()},
+  {id:'d2',make:'Chery',model:'Tiggo 8',year:2024,price:28500000,price_label:'RWF 28,500,000',body_type:'SUV',fuel_type:'Petrol',transmission:'Automatic',color:'Black',engine_cc:'1.6T',seats:7,mileage:0,description:'Demo car.',features:['7 Seats'],images:['https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=120&q=50'],status:'available',featured:true,views:8,created_at:new Date().toISOString()},
+  {id:'d3',make:'Haval',model:'H6',year:2023,price:24000000,price_label:'RWF 24,000,000',body_type:'SUV',fuel_type:'Hybrid',transmission:'Automatic',color:'Silver',engine_cc:'1.5T HEV',seats:5,mileage:0,description:'Demo car.',features:['Hybrid'],images:['https://images.unsplash.com/photo-1609521263047-f8f205293f24?w=120&q=50'],status:'available',featured:false,views:5,created_at:new Date().toISOString()},
+]}
+</script>
+</body>
+</html>

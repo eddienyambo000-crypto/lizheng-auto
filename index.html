@@ -1,0 +1,1204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Li Zheng Automobile — New BYD, Chery & Haval in Kigali</title>
+<meta name="description" content="Buy new BYD, Chery, Haval and other premium Chinese cars in Kigali, Rwanda. Li Zheng Automobile Ltd — Kicukiro-Sonatube." />
+<link rel="icon" type="image/png" href="brand_assets/logo.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,300;0,400;0,500;0,700;0,900;1,700&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" onload="this.onload=null;this.rel='stylesheet'" />
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,300;0,400;0,500;0,700;0,900;1,700&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" /></noscript>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+<style>
+:root {
+  --bg: #050505;
+  --surface: #0D0D0D;
+  --card: #111111;
+  --card2: #191919;
+  --red: #CC0000;
+  --red-light: #E31F26;
+  --red-muted: rgba(204,0,0,0.08);
+  --red-border: rgba(204,0,0,0.18);
+  --white: #FFFFFF;
+  --text: #E8E8E8;
+  --text-muted: #777777;
+  --text-dim: #333333;
+  --border: rgba(255,255,255,0.07);
+  --border2: rgba(255,255,255,0.04);
+  --radius: 4px;
+  --font-h: 'Barlow', sans-serif;
+  --font: 'DM Sans', sans-serif;
+  --max: 1280px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);background:var(--bg);color:var(--text);overflow-x:hidden;line-height:1.5;-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}
+a{text-decoration:none;color:inherit}
+button{font-family:var(--font)}
+
+/* ── NAV ── */
+#nav{
+  position:fixed;top:0;left:0;right:0;z-index:900;
+  padding:1.5rem 3rem;
+  display:flex;align-items:center;justify-content:space-between;
+  transition:all 0.4s;
+}
+#nav.scrolled{
+  background:rgba(5,5,5,0.92);
+  border-bottom:1px solid var(--border);
+  padding:1rem 3rem;
+  backdrop-filter:blur(20px);
+}
+.nav-logo{display:flex;align-items:center;gap:0.6rem}
+.nav-logo img{height:32px;object-fit:contain;filter:brightness(0) invert(1)}
+.nav-logo-text{font-family:var(--font-h);font-weight:700;font-size:0.9rem;letter-spacing:0.16em;text-transform:uppercase;color:#fff}
+.nav-logo-text em{color:var(--red-light);font-style:normal}
+.nav-links{display:flex;align-items:center;gap:2.5rem;list-style:none}
+.nav-links a{font-size:0.78rem;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.65);transition:color 0.2s}
+.nav-links a:hover{color:#fff}
+.nav-cta{
+  padding:0.6rem 1.5rem;border:1px solid rgba(255,255,255,0.3);
+  color:#fff!important;border-radius:2px;
+  font-size:0.75rem!important;font-weight:600;letter-spacing:0.12em;
+  transition:background 0.2s,border-color 0.2s!important;
+}
+.nav-cta:hover{background:var(--red)!important;border-color:var(--red)!important;color:#fff!important}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:6px}
+.hamburger span{display:block;width:22px;height:1.5px;background:#fff;transition:all 0.3s}
+.mobile-menu{
+  display:none;position:fixed;inset:0;
+  background:#050505;z-index:899;
+  flex-direction:column;align-items:center;justify-content:center;gap:2.5rem;
+}
+.mobile-menu.open{display:flex}
+.mobile-menu a{font-family:var(--font-h);font-size:2.2rem;font-weight:900;text-transform:uppercase;letter-spacing:0.04em;color:rgba(255,255,255,0.8);transition:color 0.2s}
+.mobile-menu a:hover{color:var(--red-light)}
+.mobile-close{position:absolute;top:1.5rem;right:2rem;font-size:1.2rem;cursor:pointer;color:var(--text-muted);letter-spacing:0.1em;font-family:var(--font-h)}
+
+/* ── HERO ── */
+#hero{
+  position:relative;height:100svh;min-height:600px;
+  display:flex;align-items:flex-end;justify-content:center;
+  overflow:hidden;background:#000;
+}
+#hero-video{
+  position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;z-index:0;opacity:0.55;
+}
+.hero-grad{
+  position:absolute;inset:0;z-index:1;
+  background:linear-gradient(
+    to top,
+    rgba(5,5,5,1) 0%,
+    rgba(5,5,5,0.6) 25%,
+    rgba(5,5,5,0.1) 60%,
+    rgba(5,5,5,0.3) 100%
+  );
+}
+.hero-content{
+  position:relative;z-index:2;
+  width:100%;max-width:var(--max);
+  padding:0 3rem 5rem;
+}
+.hero-eyebrow{
+  font-family:var(--font-h);font-size:0.7rem;font-weight:500;
+  letter-spacing:0.22em;text-transform:uppercase;color:var(--red-light);
+  margin-bottom:1.25rem;display:flex;align-items:center;gap:0.75rem;
+}
+.hero-eyebrow::before{content:'';width:30px;height:1px;background:var(--red-light)}
+.hero-h1{
+  font-family:var(--font-h);font-weight:900;text-transform:uppercase;
+  font-size:clamp(3.5rem,7.5vw,7rem);line-height:0.92;
+  letter-spacing:-0.02em;color:#fff;margin-bottom:2rem;
+}
+.hero-h1 .line2{color:var(--red-light);display:block}
+.hero-bottom{display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:2rem}
+.hero-sub{font-size:0.9rem;color:rgba(255,255,255,0.5);max-width:320px;line-height:1.7;font-weight:300}
+.hero-btns{display:flex;gap:1rem;align-items:center}
+.btn-fill{
+  padding:0.8rem 2rem;background:var(--red);color:#fff;
+  font-family:var(--font-h);font-weight:700;font-size:0.78rem;
+  text-transform:uppercase;letter-spacing:0.1em;border:none;
+  border-radius:2px;cursor:pointer;transition:background 0.2s;
+  display:inline-flex;align-items:center;gap:0.4rem;
+}
+.btn-fill:hover{background:var(--red-light)}
+.btn-ghost{
+  padding:0.8rem 2rem;background:transparent;color:#fff;
+  font-family:var(--font-h);font-weight:600;font-size:0.78rem;
+  text-transform:uppercase;letter-spacing:0.1em;
+  border:1px solid rgba(255,255,255,0.25);border-radius:2px;cursor:pointer;
+  transition:border-color 0.2s,color 0.2s;display:inline-flex;align-items:center;gap:0.4rem;
+}
+.btn-ghost:hover{border-color:rgba(255,255,255,0.6);color:#fff}
+.scroll-hint-v{
+  position:absolute;right:3rem;bottom:5rem;z-index:3;
+  display:flex;flex-direction:column;align-items:center;gap:0.5rem;
+  color:rgba(255,255,255,0.25);font-size:0.6rem;letter-spacing:0.18em;text-transform:uppercase;font-family:var(--font-h);
+}
+.scroll-line-v{width:1px;height:50px;background:linear-gradient(to bottom,rgba(255,255,255,0.15),var(--red));animation:sdown 2s ease-in-out infinite}
+@keyframes sdown{0%,100%{opacity:0.4;transform:scaleY(0.7)}50%{opacity:1;transform:scaleY(1)}}
+
+/* ── BRANDS STRIP ── */
+#brands{
+  background:var(--surface);
+  border-bottom:1px solid var(--border);
+  padding:0;overflow:hidden;
+}
+.brand-track{display:flex;gap:4rem;align-items:center;animation:marquee 24s linear infinite;width:max-content;padding:1.1rem 0}
+#brands:hover .brand-track{animation-play-state:paused}
+@keyframes marquee{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.brand-item{font-family:var(--font-h);font-weight:900;font-size:0.82rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.2);white-space:nowrap;transition:color 0.2s;cursor:default}
+.brand-item:hover{color:rgba(255,255,255,0.7)}
+.brand-dot{width:3px;height:3px;background:var(--red);border-radius:50%;opacity:0.5}
+
+/* ── SECTION COMMON ── */
+.section-wrap{max-width:var(--max);margin:0 auto;padding:0 3rem}
+section{padding:9rem 0}
+.eyebrow{font-family:var(--font-h);font-size:0.65rem;font-weight:600;letter-spacing:0.22em;text-transform:uppercase;color:var(--red-light);margin-bottom:1rem;display:flex;align-items:center;gap:0.6rem}
+.eyebrow::before{content:'';width:24px;height:1px;background:var(--red-light)}
+.display-title{font-family:var(--font-h);font-weight:900;text-transform:uppercase;font-size:clamp(2.2rem,4vw,4rem);line-height:0.95;letter-spacing:-0.02em;color:#fff;margin-bottom:0.5rem}
+.display-title em{color:var(--red-light);font-style:normal}
+.section-sub{color:var(--text-muted);font-size:0.9rem;font-weight:300;max-width:480px}
+
+/* ── STATS ── */
+#stats{padding:0;background:var(--surface);border-bottom:1px solid var(--border)}
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);border-left:1px solid var(--border)}
+.stat-cell{
+  padding:3.5rem 2.5rem;border-right:1px solid var(--border);
+  position:relative;overflow:hidden;transition:background 0.3s;
+}
+.stat-cell::after{content:'';position:absolute;bottom:0;left:0;width:0;height:2px;background:var(--red);transition:width 0.4s}
+.stat-cell:hover::after{width:100%}
+.stat-cell:hover{background:rgba(255,255,255,0.015)}
+.stat-n{font-family:var(--font-h);font-size:3.5rem;font-weight:900;color:#fff;line-height:1;margin-bottom:0.4rem}
+.stat-n span{font-size:2rem;color:var(--red)}
+.stat-l{font-size:0.7rem;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-muted)}
+
+/* ── CAR CARD ── */
+.cars-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border)}
+.car-card{
+  background:var(--card);cursor:pointer;
+  position:relative;overflow:hidden;
+  transition:background 0.3s;
+}
+.car-card:hover{background:var(--card2)}
+.car-img-wrap{position:relative;aspect-ratio:16/10;overflow:hidden;background:#0a0a0a}
+.car-img-wrap img{width:100%;height:100%;object-fit:cover;transition:transform 0.6s cubic-bezier(0.25,0.46,0.45,0.94);filter:brightness(0.9)}
+.car-card:hover .car-img-wrap img{transform:scale(1.04);filter:brightness(1)}
+.car-badge-wrap{position:absolute;top:1rem;left:1rem;right:1rem;display:flex;justify-content:space-between;align-items:center;z-index:2}
+.car-status-badge{
+  padding:0.2rem 0.65rem;border-radius:2px;font-size:0.6rem;
+  font-family:var(--font-h);font-weight:700;letter-spacing:0.12em;text-transform:uppercase;
+}
+.status-available{background:rgba(255,255,255,0.12);color:rgba(255,255,255,0.8);backdrop-filter:blur(8px)}
+.status-sold{background:rgba(204,0,0,0.25);color:#ff6b6b;backdrop-filter:blur(8px)}
+.status-reserved{background:rgba(251,191,36,0.2);color:#fbbf24;backdrop-filter:blur(8px)}
+.compare-btn{
+  width:28px;height:28px;background:rgba(10,10,10,0.7);border:1px solid rgba(255,255,255,0.15);
+  border-radius:2px;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  font-size:0.65rem;color:rgba(255,255,255,0.5);transition:all 0.2s;backdrop-filter:blur(8px);
+  font-family:var(--font-h);font-weight:700;letter-spacing:0.05em;
+}
+.compare-btn.on{background:var(--red);border-color:var(--red);color:#fff}
+.car-body{padding:1.5rem 1.75rem 1.75rem}
+.car-make-tag{font-size:0.62rem;font-family:var(--font-h);font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--red-light);margin-bottom:0.35rem}
+.car-name{font-family:var(--font-h);font-size:1.3rem;font-weight:900;text-transform:uppercase;letter-spacing:0.01em;color:#fff;line-height:1.05;margin-bottom:1rem}
+.car-chips{display:flex;flex-wrap:wrap;gap:0.4rem;margin-bottom:1.1rem}
+.chip{
+  padding:0.18rem 0.6rem;border:1px solid var(--border);border-radius:2px;
+  font-size:0.65rem;color:var(--text-muted);font-weight:500;letter-spacing:0.06em;font-family:var(--font-h);text-transform:uppercase;
+}
+.car-price-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem}
+.car-price{font-family:var(--font-h);font-size:1.15rem;font-weight:900;color:#fff}
+.car-year{font-size:0.75rem;color:var(--text-muted);font-weight:400}
+.car-btns{display:grid;grid-template-columns:1fr auto;gap:0.5rem}
+.btn-view-car{
+  padding:0.7rem 1rem;background:transparent;border:1px solid var(--border);
+  color:rgba(255,255,255,0.7);font-family:var(--font-h);font-weight:600;
+  font-size:0.72rem;text-transform:uppercase;letter-spacing:0.1em;
+  border-radius:2px;cursor:pointer;transition:all 0.2s;text-align:center;
+}
+.btn-view-car:hover{border-color:rgba(255,255,255,0.4);color:#fff;background:rgba(255,255,255,0.04)}
+.btn-wa-icon{
+  width:42px;border-radius:2px;background:#25D366;border:none;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  transition:opacity 0.2s;
+}
+.btn-wa-icon:hover{opacity:0.85}
+.btn-wa-icon svg{width:17px;height:17px;fill:#fff}
+
+/* ── FEATURED / ALL ── */
+#featured{padding-bottom:0}
+#featured .section-wrap{padding-bottom:4rem}
+#all-cars{padding-top:0}
+
+/* Filter bar */
+.filter-bar{
+  background:var(--surface);border-bottom:1px solid var(--border);
+  padding:1rem 3rem;display:flex;gap:0.75rem;flex-wrap:wrap;align-items:center;
+  position:sticky;top:61px;z-index:50;
+}
+.filter-bar input,.filter-bar select{
+  padding:0.55rem 1rem;background:transparent;
+  border:1px solid var(--border);border-radius:2px;
+  color:var(--text);font-family:var(--font-h);font-size:0.72rem;
+  font-weight:500;letter-spacing:0.08em;text-transform:uppercase;
+  outline:none;transition:border-color 0.2s;cursor:pointer;
+}
+.filter-bar input{flex:1;min-width:160px;letter-spacing:0.04em;text-transform:none}
+.filter-bar input::placeholder{color:var(--text-dim);text-transform:none;font-family:var(--font);letter-spacing:0}
+.filter-bar input:focus,.filter-bar select:focus{border-color:rgba(255,255,255,0.25)}
+.filter-bar select option{background:#111;color:#fff}
+.load-more-row{text-align:center;padding:4rem 0 0}
+
+/* ── CAR PAGE ── */
+#car-page{display:none;min-height:100svh;padding-top:72px}
+#car-page.active{display:block}
+.car-pg-inner{max-width:var(--max);margin:0 auto;padding:3rem}
+.car-pg-back{display:inline-flex;align-items:center;gap:0.5rem;color:var(--text-muted);font-size:0.75rem;font-family:var(--font-h);font-weight:600;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;margin-bottom:3rem;transition:color 0.2s}
+.car-pg-back:hover{color:#fff}
+.car-pg-grid{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:start}
+/* Gallery */
+.gal-main{position:relative;aspect-ratio:16/10;background:#0a0a0a;overflow:hidden;border-radius:2px}
+.gal-main img{width:100%;height:100%;object-fit:cover}
+.gal-arr{
+  position:absolute;top:50%;transform:translateY(-50%);
+  width:44px;height:44px;background:rgba(5,5,5,0.7);border:1px solid var(--border);
+  border-radius:2px;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  color:#fff;font-size:1.1rem;transition:all 0.2s;z-index:2;backdrop-filter:blur(8px);
+}
+.gal-arr:hover{background:var(--red);border-color:var(--red)}
+.gal-arr.prev{left:1rem}
+.gal-arr.next{right:1rem}
+.gal-dots{display:flex;gap:0.4rem;justify-content:center;margin-top:0.75rem}
+.gal-dot{width:20px;height:2px;background:var(--border);cursor:pointer;transition:background 0.2s;border-radius:1px}
+.gal-dot.on{background:var(--red)}
+.gal-thumbs{display:flex;gap:0.5rem;margin-top:0.75rem;overflow-x:auto;padding-bottom:4px}
+.gal-thumbs::-webkit-scrollbar{height:2px}
+.gal-thumbs::-webkit-scrollbar-thumb{background:var(--red);border-radius:1px}
+.gal-thumb{width:72px;height:50px;flex-shrink:0;overflow:hidden;border-radius:2px;cursor:pointer;border:1.5px solid transparent;opacity:0.5;transition:all 0.2s}
+.gal-thumb.on{border-color:var(--red);opacity:1}
+.gal-thumb img{width:100%;height:100%;object-fit:cover}
+/* Car info panel */
+.car-pg-info{position:sticky;top:90px}
+.cpg-make{font-size:0.65rem;font-family:var(--font-h);font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:var(--red-light);margin-bottom:0.4rem}
+.cpg-name{font-family:var(--font-h);font-size:2.4rem;font-weight:900;text-transform:uppercase;letter-spacing:-0.01em;color:#fff;line-height:1;margin-bottom:0.3rem}
+.cpg-year{font-size:0.9rem;color:var(--text-muted);margin-bottom:1.5rem}
+.cpg-price{font-family:var(--font-h);font-size:2rem;font-weight:900;color:#fff;margin-bottom:2rem;border-bottom:1px solid var(--border);padding-bottom:1.5rem}
+.specs-list{list-style:none;border-top:1px solid var(--border);margin-bottom:1.5rem}
+.specs-list li{display:flex;justify-content:space-between;padding:0.7rem 0;border-bottom:1px solid var(--border2);font-size:0.83rem}
+.specs-list li span:first-child{color:var(--text-muted);font-weight:400}
+.specs-list li span:last-child{color:#fff;font-weight:500}
+.cpg-features{display:flex;flex-wrap:wrap;gap:0.4rem;margin-bottom:1.5rem}
+.cpg-chip{padding:0.22rem 0.7rem;border:1px solid var(--border);border-radius:2px;font-size:0.66rem;color:rgba(255,255,255,0.6);font-family:var(--font-h);font-weight:600;letter-spacing:0.08em;text-transform:uppercase}
+.cpg-desc{font-size:0.875rem;color:var(--text-muted);line-height:1.75;margin-bottom:1.75rem;font-weight:300}
+.cpg-ctas{display:flex;gap:0.65rem;flex-wrap:wrap;margin-bottom:1.5rem}
+.cpg-views{font-size:0.7rem;color:var(--text-dim);letter-spacing:0.06em}
+/* Finance calc */
+.calc-box{background:var(--surface);border:1px solid var(--border);padding:1.75rem;border-radius:2px;margin-top:1.75rem}
+.calc-box h4{font-family:var(--font-h);font-size:0.75rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:1.25rem}
+.calc-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;margin-bottom:1rem}
+.calc-f label{display:block;font-size:0.62rem;font-family:var(--font-h);font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-muted);margin-bottom:0.35rem}
+.calc-f input{width:100%;padding:0.6rem 0.8rem;background:var(--card2);border:1px solid var(--border);border-radius:2px;color:#fff;font-family:var(--font-h);font-size:0.83rem;outline:none;transition:border-color 0.2s}
+.calc-f input:focus{border-color:rgba(255,255,255,0.2)}
+.calc-out{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border-radius:2px;overflow:hidden}
+.calc-cell{background:var(--card2);padding:1rem;text-align:center}
+.calc-v{font-family:var(--font-h);font-size:1rem;font-weight:900;color:#fff}
+.calc-l{font-size:0.6rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.1em;margin-top:0.2rem}
+/* Walkround */
+.walkround-box{margin-top:1.75rem}
+.walkround-box h4{font-family:var(--font-h);font-size:0.75rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:1rem}
+.wk-frame{position:relative;padding-bottom:56.25%;border-radius:2px;overflow:hidden;border:1px solid var(--border)}
+.wk-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:none}
+
+/* ── COMPARE TRAY ── */
+#cmp-tray{
+  position:fixed;bottom:0;left:0;right:0;z-index:800;
+  background:rgba(5,5,5,0.95);border-top:1px solid var(--red-border);
+  padding:1rem 3rem;display:none;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:1rem;backdrop-filter:blur(16px);
+  transform:translateY(100%);transition:transform 0.3s;
+}
+#cmp-tray.open{display:flex;transform:translateY(0)}
+.tray-thumbs{display:flex;gap:0.6rem;align-items:center}
+.tray-thumb{width:60px;height:42px;border-radius:2px;overflow:hidden;border:1px solid var(--red-border);position:relative}
+.tray-thumb img{width:100%;height:100%;object-fit:cover}
+.tray-rm{position:absolute;top:-4px;right:-4px;width:15px;height:15px;background:var(--red);border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:0.55rem;color:#fff}
+.tray-info{font-family:var(--font-h);font-size:0.7rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted)}
+.tray-info span{color:#fff}
+
+/* Compare modal */
+#cmp-modal{display:none;position:fixed;inset:0;z-index:2000;background:rgba(5,5,5,0.97);overflow-y:auto;padding:3rem 2rem}
+#cmp-modal.open{display:block}
+.cmp-inner{max-width:1100px;margin:0 auto}
+.cmp-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:3rem}
+.cmp-hd h2{font-family:var(--font-h);font-size:1.8rem;font-weight:900;text-transform:uppercase;letter-spacing:-0.01em}
+.cmp-x{width:38px;height:38px;border:1px solid var(--border);border-radius:2px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text-muted);font-size:0.9rem;transition:all 0.2s}
+.cmp-x:hover{border-color:rgba(255,255,255,0.3);color:#fff}
+.cmp-table{width:100%;border-collapse:collapse}
+.cmp-table th,.cmp-table td{padding:0.85rem 1.25rem;border-bottom:1px solid var(--border2);font-size:0.83rem;text-align:left}
+.cmp-table th{font-family:var(--font-h);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;font-size:0.65rem;color:var(--text-muted);background:var(--surface);border-bottom:1px solid var(--border)}
+.cmp-table th:first-child{color:var(--text-dim);width:18%}
+.cmp-table td:first-child{color:var(--text-muted);font-weight:400;font-size:0.8rem}
+.cmp-diff{color:var(--red-light)!important;font-weight:700!important}
+.cmp-car-th{display:flex;flex-direction:column;align-items:center;gap:0.6rem}
+.cmp-car-th img{width:90px;height:62px;object-fit:cover;border-radius:2px;border:1px solid var(--border)}
+.cmp-car-th .n{font-family:var(--font-h);font-weight:800;font-size:0.82rem;text-transform:uppercase;text-align:center;color:#fff}
+
+/* ── SPARE PARTS ── */
+#spare-parts{background:var(--surface)}
+.parts-cats-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:2px;overflow:hidden;margin-bottom:3rem}
+.part-cat-cell{
+  background:var(--card);padding:1.5rem 1rem;text-align:center;cursor:pointer;
+  transition:background 0.2s;
+}
+.part-cat-cell:hover{background:var(--card2)}
+.part-cat-cell .ico{font-size:1.6rem;margin-bottom:0.5rem}
+.part-cat-cell .lbl{font-family:var(--font-h);font-size:0.65rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-muted)}
+.parts-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border)}
+.part-card{background:var(--card);padding:1.5rem;transition:background 0.2s}
+.part-card:hover{background:var(--card2)}
+.part-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:0.6rem}
+.part-name{font-size:0.875rem;font-weight:500;color:#fff;line-height:1.4;flex:1}
+.part-cat-tag{font-size:0.58rem;font-family:var(--font-h);font-weight:700;letter-spacing:0.12em;text-transform:uppercase;padding:0.15rem 0.5rem;border:1px solid var(--red-border);color:var(--red-light);border-radius:2px;white-space:nowrap;margin-left:0.5rem}
+.part-compat{font-size:0.72rem;color:var(--text-dim);margin-bottom:0.9rem}
+.part-btm{display:flex;justify-content:space-between;align-items:center}
+.part-price{font-family:var(--font-h);font-size:0.9rem;font-weight:800;color:#fff}
+.part-stock-ok{font-size:0.62rem;font-family:var(--font-h);font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#4ade80}
+.part-stock-no{color:#f87171}
+.part-req{padding:0.35rem 0.85rem;background:transparent;border:1px solid var(--border);color:rgba(255,255,255,0.55);font-family:var(--font-h);font-weight:600;font-size:0.65rem;text-transform:uppercase;letter-spacing:0.1em;border-radius:2px;cursor:pointer;transition:all 0.2s}
+.part-req:hover{border-color:rgba(255,255,255,0.3);color:#fff}
+
+/* ── TEST DRIVE ── */
+#test-drive{background:var(--bg)}
+.td-layout{display:grid;grid-template-columns:1fr 1fr;gap:8rem;align-items:start;max-width:var(--max);margin:0 auto;padding:0 3rem}
+.td-left h2{font-family:var(--font-h);font-weight:900;font-size:clamp(2.2rem,3.5vw,3.5rem);text-transform:uppercase;letter-spacing:-0.02em;color:#fff;line-height:0.95;margin-bottom:1.5rem}
+.td-left h2 em{color:var(--red-light);font-style:normal}
+.td-left p{font-size:0.9rem;color:var(--text-muted);line-height:1.75;font-weight:300;margin-bottom:2rem}
+.td-feature{display:flex;align-items:flex-start;gap:0.75rem;margin-bottom:1rem}
+.td-feature .icon{width:32px;height:32px;background:var(--red-muted);border:1px solid var(--red-border);border-radius:2px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:0.9rem}
+.td-feature .text{font-size:0.83rem;color:rgba(255,255,255,0.6);font-weight:400}
+.td-right{}
+.form-wrap{background:var(--surface);border:1px solid var(--border);padding:2.5rem;border-radius:2px;position:relative}
+.form-wrap::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--red),var(--red-light))}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.f-field{display:flex;flex-direction:column;gap:0.35rem}
+.f-field.full{grid-column:1/-1}
+.f-field label{font-size:0.62rem;font-family:var(--font-h);font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-muted)}
+.f-field label em{color:var(--red-light);font-style:normal}
+.f-field input,.f-field select,.f-field textarea{
+  padding:0.7rem 0.9rem;background:var(--card2);border:1px solid var(--border);
+  border-radius:2px;color:#fff;font-family:var(--font);font-size:0.875rem;outline:none;
+  transition:border-color 0.2s;
+}
+.f-field input:focus,.f-field select:focus,.f-field textarea:focus{border-color:rgba(255,255,255,0.2)}
+.f-field select option{background:#111}
+.f-field textarea{resize:vertical;min-height:80px}
+.form-success{display:none;text-align:center;padding:3rem 1rem}
+.form-success .check{font-size:3rem;margin-bottom:1rem}
+.form-success h3{font-family:var(--font-h);font-size:1.3rem;font-weight:900;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:0.5rem}
+.form-success p{font-size:0.875rem;color:var(--text-muted)}
+
+/* ── WHY US ── */
+#why-us{background:var(--surface);border-top:1px solid var(--border)}
+.why-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:2px;overflow:hidden}
+.why-cell{background:var(--card);padding:2.5rem 2rem;transition:background 0.2s;position:relative}
+.why-cell::before{content:'';position:absolute;top:0;left:0;width:2px;height:0;background:var(--red);transition:height 0.4s}
+.why-cell:hover::before{height:100%}
+.why-cell:hover{background:var(--card2)}
+.why-ico{font-size:1.6rem;margin-bottom:1.25rem}
+.why-title{font-family:var(--font-h);font-size:0.8rem;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:#fff;margin-bottom:0.6rem}
+.why-text{font-size:0.8rem;color:var(--text-muted);line-height:1.65;font-weight:300}
+
+/* ── HOW TO BUY ── */
+#how{background:var(--bg)}
+.steps-row{display:grid;grid-template-columns:repeat(4,1fr);position:relative}
+.steps-row::before{content:'';position:absolute;top:27px;left:12%;right:12%;height:1px;background:linear-gradient(90deg,var(--red),var(--red-light));z-index:0}
+.step{text-align:center;position:relative;z-index:1;padding:0 1rem}
+.step-n{
+  width:54px;height:54px;background:var(--red);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;margin:0 auto 1.5rem;
+  font-family:var(--font-h);font-size:1.1rem;font-weight:900;color:#fff;
+}
+.step-t{font-family:var(--font-h);font-size:0.82rem;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;margin-bottom:0.6rem;color:#fff}
+.step-d{font-size:0.78rem;color:var(--text-muted);line-height:1.6;font-weight:300}
+
+/* ── TESTIMONIALS ── */
+#testimonials{background:var(--surface);border-top:1px solid var(--border)}
+.test-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border)}
+.test-card{background:var(--card);padding:2.5rem;transition:background 0.2s}
+.test-card:hover{background:var(--card2)}
+.test-stars{color:var(--red-light);font-size:0.85rem;letter-spacing:2px;margin-bottom:1.25rem}
+.test-q{font-size:0.9rem;color:rgba(255,255,255,0.6);line-height:1.75;font-weight:300;font-style:italic;margin-bottom:1.5rem}
+.test-by{display:flex;align-items:center;gap:0.75rem}
+.test-av{width:38px;height:38px;border-radius:50%;background:var(--red-muted);border:1px solid var(--red-border);display:flex;align-items:center;justify-content:center;font-family:var(--font-h);font-weight:900;font-size:0.9rem;color:var(--red-light)}
+.test-nm{font-size:0.83rem;font-weight:600;color:#fff}
+.test-car-lbl{font-size:0.7rem;color:var(--text-muted)}
+
+/* ── CONTACT ── */
+#contact{background:var(--bg)}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:6rem;max-width:var(--max);margin:0 auto;padding:0 3rem}
+.contact-side h2{font-family:var(--font-h);font-size:clamp(2rem,3.5vw,3.5rem);font-weight:900;text-transform:uppercase;letter-spacing:-0.02em;color:#fff;line-height:0.95;margin-bottom:2.5rem}
+.contact-side h2 em{color:var(--red-light);font-style:normal}
+.ci{display:flex;align-items:flex-start;gap:1rem;margin-bottom:1.5rem}
+.ci-ico{width:40px;height:40px;background:var(--red-muted);border:1px solid var(--red-border);border-radius:2px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:0.9rem}
+.ci-lbl{font-size:0.62rem;font-family:var(--font-h);font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-muted);margin-bottom:0.2rem}
+.ci-val{font-size:0.9rem;color:#fff;font-weight:400}
+.ci-val a{color:#fff;transition:color 0.2s}
+.ci-val a:hover{color:var(--red-light)}
+.contact-btns{display:flex;flex-wrap:wrap;gap:0.6rem;margin-top:2rem}
+.btn-wa-full{display:inline-flex;align-items:center;gap:0.5rem;padding:0.7rem 1.4rem;background:#25D366;color:#fff;font-family:var(--font-h);font-weight:700;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.1em;border-radius:2px;transition:opacity 0.2s}
+.btn-wa-full:hover{opacity:0.88}
+.btn-social{display:inline-flex;align-items:center;gap:0.4rem;padding:0.7rem 1.2rem;background:transparent;border:1px solid var(--border);color:rgba(255,255,255,0.6);font-family:var(--font-h);font-weight:600;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.1em;border-radius:2px;transition:all 0.2s}
+.btn-social:hover{border-color:rgba(255,255,255,0.25);color:#fff}
+.map-box{border-radius:2px;overflow:hidden;border:1px solid var(--border);height:380px}
+.map-box iframe{width:100%;height:100%;border:none;filter:grayscale(0.8) contrast(1.2)}
+
+/* ── FOOTER ── */
+footer{background:#000;border-top:1px solid var(--border);padding:3.5rem 3rem 2.5rem}
+.footer-inner{max-width:var(--max);margin:0 auto}
+.footer-top{display:flex;justify-content:space-between;align-items:center;padding-bottom:2.5rem;border-bottom:1px solid var(--border2);flex-wrap:wrap;gap:2rem}
+.f-brand .fn{font-family:var(--font-h);font-size:0.85rem;font-weight:900;text-transform:uppercase;letter-spacing:0.16em;color:#fff}
+.f-brand .fn em{color:var(--red-light);font-style:normal}
+.f-brand .fl{font-size:0.65rem;color:var(--text-dim);letter-spacing:0.1em;text-transform:uppercase;margin-top:0.2rem}
+.f-links{display:flex;gap:2rem;flex-wrap:wrap}
+.f-links a{font-size:0.72rem;color:var(--text-muted);font-family:var(--font-h);font-weight:500;letter-spacing:0.1em;text-transform:uppercase;transition:color 0.2s}
+.f-links a:hover{color:#fff}
+.footer-bottom{display:flex;justify-content:space-between;align-items:center;padding-top:2rem;flex-wrap:wrap;gap:1rem}
+.f-copy{font-size:0.72rem;color:var(--text-dim)}
+.f-built{font-size:0.72rem;color:var(--text-dim)}
+.f-built a{color:var(--red-light);transition:color 0.2s}
+.f-built a:hover{color:#fff}
+
+/* ── WA FLOAT ── */
+#wa-float{position:fixed;bottom:2rem;right:2rem;z-index:700;width:50px;height:50px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 24px rgba(37,211,102,0.3);transition:transform 0.2s;animation:wapulse 3s ease-in-out infinite}
+#wa-float:hover{transform:scale(1.1)}
+@keyframes wapulse{0%,100%{box-shadow:0 4px 24px rgba(37,211,102,0.3)}50%{box-shadow:0 4px 36px rgba(37,211,102,0.5)}}
+#wa-float svg{width:24px;height:24px;fill:#fff}
+
+/* ── LOADING ── */
+.lds{display:flex;align-items:center;gap:0.75rem;padding:5rem;justify-content:center;color:var(--text-muted);font-size:0.82rem;font-family:var(--font-h);letter-spacing:0.08em;text-transform:uppercase;grid-column:1/-1}
+.spin{width:18px;height:18px;border:1.5px solid var(--border);border-top-color:var(--red);border-radius:50%;animation:spin 0.6s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.empty-msg{grid-column:1/-1;text-align:center;padding:5rem 2rem;color:var(--text-muted)}
+.empty-msg h3{font-family:var(--font-h);font-size:1.2rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.5rem;color:rgba(255,255,255,0.3)}
+
+/* ── RESPONSIVE ── */
+@media(max-width:1200px){
+  .section-wrap,.filter-bar,#contact .contact-grid{padding-left:2rem;padding-right:2rem}
+  #nav,#nav.scrolled{padding-left:2rem;padding-right:2rem}
+  .car-pg-inner{padding:2rem}
+  .td-layout{padding:0 2rem;gap:4rem}
+  .stats-row{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:900px){
+  .cars-grid{grid-template-columns:repeat(2,1fr)}
+  .why-grid{grid-template-columns:repeat(2,1fr)}
+  .car-pg-grid{grid-template-columns:1fr;gap:2.5rem}
+  .car-pg-info{position:static}
+  .td-layout{grid-template-columns:1fr;gap:3rem}
+  .contact-grid{grid-template-columns:1fr;gap:3rem}
+  .parts-cats-grid{grid-template-columns:repeat(3,1fr)}
+  .parts-grid{grid-template-columns:repeat(2,1fr)}
+  .test-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:768px){
+  .nav-links{display:none}
+  .hamburger{display:flex}
+  .hero-content{padding:0 1.5rem 4rem}
+  .scroll-hint-v{display:none}
+  section{padding:6rem 0}
+  .section-wrap,.filter-bar,#contact .contact-grid,.td-layout{padding-left:1.25rem;padding-right:1.25rem}
+  #nav,#nav.scrolled{padding-left:1.25rem;padding-right:1.25rem}
+  .car-pg-inner{padding:1.25rem}
+  .stats-row{grid-template-columns:1fr 1fr}
+  .cars-grid{grid-template-columns:1fr 1fr;gap:1px}
+  .steps-row{grid-template-columns:repeat(2,1fr);gap:2.5rem}
+  .steps-row::before{display:none}
+  .parts-cats-grid{grid-template-columns:repeat(3,1fr)}
+  .test-grid{grid-template-columns:1fr}
+  .why-grid{grid-template-columns:1fr 1fr}
+  #cmp-tray{padding:0.85rem 1.25rem}
+  .form-grid,.calc-grid{grid-template-columns:1fr}
+  .hero-bottom{flex-direction:column;gap:1.5rem;align-items:flex-start}
+  footer{padding:3rem 1.25rem 2rem}
+  .footer-top,.footer-bottom{flex-direction:column;align-items:flex-start;gap:1.5rem}
+  .f-links{gap:1.25rem}
+}
+@media(max-width:480px){
+  .cars-grid{grid-template-columns:1fr}
+  .stats-row{grid-template-columns:1fr 1fr}
+  .parts-cats-grid{grid-template-columns:repeat(2,1fr)}
+  .parts-grid{grid-template-columns:1fr}
+  .why-grid{grid-template-columns:1fr}
+  .steps-row{grid-template-columns:1fr}
+  .hero-btns{flex-direction:column;width:100%}
+  .btn-fill,.btn-ghost{justify-content:center;width:100%}
+  .contact-btns{flex-direction:column}
+  .btn-wa-full,.btn-social{justify-content:center}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="nav-logo">
+    <img src="brand_assets/logo.png" alt="Li Zheng" onerror="this.style.display='none'" />
+    <div class="nav-logo-text">LI ZHENG <em>AUTO</em></div>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#all-cars" onclick="showMain()">Cars</a></li>
+    <li><a href="#spare-parts">Spare Parts</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="#test-drive" class="nav-cta">Book Test Drive</a></li>
+  </ul>
+  <div class="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></div>
+</nav>
+
+<div class="mobile-menu" id="mobile-menu">
+  <div class="mobile-close" onclick="toggleMenu()">CLOSE ✕</div>
+  <a href="#all-cars" onclick="toggleMenu();showMain()">Cars</a>
+  <a href="#spare-parts" onclick="toggleMenu()">Spare Parts</a>
+  <a href="#test-drive" onclick="toggleMenu()">Test Drive</a>
+  <a href="#contact" onclick="toggleMenu()">Contact</a>
+</div>
+
+<!-- ══════════════ MAIN SITE ══════════════ -->
+<div id="main-site">
+
+<!-- HERO -->
+<section id="hero">
+  <video id="hero-video" autoplay muted loop playsinline preload="none">
+    <source src="brand_assets/hero-video.mp4" type="video/mp4" />
+    <source src="https://player.vimeo.com/external/517090081.hd.mp4?s=5c9aba91bca3e804ece45f11e65ede1e8e74c6fb&profile_id=175&oauth2_token_id=57447761" type="video/mp4" />
+  </video>
+  <div class="hero-grad"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">Kicukiro-Sonatube, Kigali, Rwanda</div>
+    <h1 class="hero-h1" id="hero-h1">
+      Drive Something<br/>
+      <span class="line2">Different.</span>
+    </h1>
+    <div class="hero-bottom">
+      <p class="hero-sub">New BYD, Chery, Haval and more — Rwanda's premium Chinese car dealer. Test drives available daily.</p>
+      <div class="hero-btns">
+        <a href="#all-cars" class="btn-fill">Browse Cars →</a>
+        <a href="https://wa.me/250781845376?text=Hi Li Zheng Automobile, I'd like to inquire about your cars." target="_blank" class="btn-ghost">WhatsApp Us</a>
+      </div>
+    </div>
+  </div>
+  <div class="scroll-hint-v"><span>Scroll</span><div class="scroll-line-v"></div></div>
+</section>
+
+<!-- BRAND STRIP -->
+<div id="brands">
+  <div class="brand-track">
+    <span class="brand-item">BYD</span><span class="brand-dot"></span>
+    <span class="brand-item">CHERY</span><span class="brand-dot"></span>
+    <span class="brand-item">HAVAL</span><span class="brand-dot"></span>
+    <span class="brand-item">GWM</span><span class="brand-dot"></span>
+    <span class="brand-item">MG</span><span class="brand-dot"></span>
+    <span class="brand-item">DONGFENG</span><span class="brand-dot"></span>
+    <span class="brand-item">BYD</span><span class="brand-dot"></span>
+    <span class="brand-item">CHERY</span><span class="brand-dot"></span>
+    <span class="brand-item">HAVAL</span><span class="brand-dot"></span>
+    <span class="brand-item">GWM</span><span class="brand-dot"></span>
+    <span class="brand-item">MG</span><span class="brand-dot"></span>
+    <span class="brand-item">DONGFENG</span><span class="brand-dot"></span>
+  </div>
+</div>
+
+<!-- STATS -->
+<div id="stats">
+  <div class="stats-row">
+    <div class="stat-cell"><div class="stat-n" data-t="50">0<span>+</span></div><div class="stat-l">Cars in Stock</div></div>
+    <div class="stat-cell"><div class="stat-n" data-t="6">0<span>+</span></div><div class="stat-l">Brands</div></div>
+    <div class="stat-cell"><div class="stat-n" data-t="200">0<span>+</span></div><div class="stat-l">Happy Clients</div></div>
+    <div class="stat-cell"><div class="stat-n" data-t="5">0<span>+</span></div><div class="stat-l">Years in Kigali</div></div>
+  </div>
+</div>
+
+<!-- FEATURED CARS -->
+<section id="featured" style="padding-bottom:2rem">
+  <div class="section-wrap" style="padding-bottom:3rem">
+    <div style="display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:1rem;margin-bottom:3rem">
+      <div>
+        <div class="eyebrow">Top Picks</div>
+        <h2 class="display-title">Featured <em>Cars</em></h2>
+      </div>
+      <a href="#all-cars" style="font-family:var(--font-h);font-size:0.72rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-muted);transition:color 0.2s" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='var(--text-muted)'">View All →</a>
+    </div>
+  </div>
+  <div class="cars-grid" id="featured-grid">
+    <div class="lds"><div class="spin"></div>Loading featured cars…</div>
+  </div>
+</section>
+
+<!-- ALL CARS -->
+<section id="all-cars" style="padding-top:2rem">
+  <div class="section-wrap" style="padding-bottom:2rem">
+    <div class="eyebrow">Full Inventory</div>
+    <h2 class="display-title">All <em>Cars</em></h2>
+  </div>
+  <div class="filter-bar">
+    <input type="text" id="s-search" placeholder="Search make or model…" oninput="filterCars()" />
+    <select id="s-make" onchange="filterCars()">
+      <option value="">All Brands</option>
+      <option>BYD</option><option>Chery</option><option>Haval</option>
+      <option>GWM</option><option>MG</option>
+    </select>
+    <select id="s-body" onchange="filterCars()">
+      <option value="">All Types</option>
+      <option>SUV</option><option>Sedan</option><option>Hatchback</option>
+      <option>Pickup</option><option>Van</option>
+    </select>
+    <select id="s-fuel" onchange="filterCars()">
+      <option value="">All Fuel</option>
+      <option>Electric</option><option>Hybrid</option>
+      <option>Petrol</option><option>Diesel</option>
+    </select>
+    <select id="s-sort" onchange="filterCars()">
+      <option value="new">Newest</option>
+      <option value="pa">Price ↑</option>
+      <option value="pd">Price ↓</option>
+    </select>
+  </div>
+  <div class="cars-grid" id="all-grid">
+    <div class="lds"><div class="spin"></div>Loading…</div>
+  </div>
+  <div id="load-more-row" class="load-more-row" style="display:none;padding-bottom:6rem">
+    <button class="btn-ghost" onclick="loadMore()">Load More Cars</button>
+  </div>
+</section>
+
+<!-- SPARE PARTS -->
+<section id="spare-parts">
+  <div class="section-wrap">
+    <div class="eyebrow">Genuine OEM</div>
+    <h2 class="display-title" style="margin-bottom:0.5rem">Spare <em>Parts</em></h2>
+    <p class="section-sub" style="margin-bottom:3rem">Compatible parts for BYD, Chery, Haval and all Chinese brands</p>
+    <div class="parts-cats-grid">
+      <div class="part-cat-cell"><div class="ico">⚙️</div><div class="lbl">Engine</div></div>
+      <div class="part-cat-cell"><div class="ico">🚗</div><div class="lbl">Body</div></div>
+      <div class="part-cat-cell"><div class="ico">⚡</div><div class="lbl">Electrical</div></div>
+      <div class="part-cat-cell"><div class="ico">🛞</div><div class="lbl">Brakes</div></div>
+      <div class="part-cat-cell"><div class="ico">🔧</div><div class="lbl">Suspension</div></div>
+      <div class="part-cat-cell"><div class="ico">🪑</div><div class="lbl">Interior</div></div>
+    </div>
+    <div class="parts-grid" id="parts-grid">
+      <div class="lds"><div class="spin"></div>Loading parts…</div>
+    </div>
+  </div>
+</section>
+
+<!-- TEST DRIVE -->
+<section id="test-drive">
+  <div class="td-layout">
+    <div class="td-left">
+      <div class="eyebrow">Feel It First</div>
+      <h2>Book a<br/><em>Test Drive</em></h2>
+      <p>Pick any car from our showroom at Kicukiro-Sonatube. Our team will have it ready and walk you through everything.</p>
+      <div class="td-feature"><div class="icon">📍</div><div class="text">Kicukiro-Sonatube, Kigali — open Mon–Sat 08:00–18:00</div></div>
+      <div class="td-feature"><div class="icon">⚡</div><div class="text">Same-day test drives available. Fast WhatsApp confirmation.</div></div>
+      <div class="td-feature"><div class="icon">🔑</div><div class="text">No deposit required. Just show up and drive.</div></div>
+    </div>
+    <div class="td-right">
+      <div class="form-wrap">
+        <div id="td-wrap">
+          <div class="form-grid" style="margin-bottom:1rem">
+            <div class="f-field"><label>Name <em>*</em></label><input id="td-name" placeholder="Your full name" /></div>
+            <div class="f-field"><label>Phone <em>*</em></label><input id="td-phone" type="tel" placeholder="+250 7XX XXX XXX" /></div>
+            <div class="f-field"><label>Email</label><input id="td-email" type="email" placeholder="your@email.com" /></div>
+            <div class="f-field"><label>Car of Interest <em>*</em></label>
+              <select id="td-car"><option value="">Loading…</option></select>
+            </div>
+            <div class="f-field"><label>Date <em>*</em></label><input id="td-date" type="date" /></div>
+            <div class="f-field"><label>Time <em>*</em></label>
+              <select id="td-time">
+                <option value="09:00">09:00</option><option value="10:00">10:00</option>
+                <option value="11:00">11:00</option><option value="12:00">12:00</option>
+                <option value="14:00">14:00</option><option value="15:00">15:00</option>
+                <option value="16:00">16:00</option>
+              </select>
+            </div>
+            <div class="f-field full"><label>Message</label><textarea id="td-msg" placeholder="Any special requests…"></textarea></div>
+            <div class="f-field full">
+              <button class="btn-fill" style="width:100%;justify-content:center;padding:1rem;font-size:0.82rem" onclick="submitTD()">Book Test Drive →</button>
+            </div>
+          </div>
+        </div>
+        <div class="form-success" id="td-ok">
+          <div class="check">✅</div>
+          <h3>Booking Confirmed!</h3>
+          <p>We'll contact you shortly to confirm your test drive. See you at the showroom.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY US -->
+<section id="why-us">
+  <div class="section-wrap">
+    <div style="display:grid;grid-template-columns:1fr 2fr;gap:4rem;align-items:end;margin-bottom:3.5rem">
+      <div>
+        <div class="eyebrow">Why Choose Us</div>
+        <h2 class="display-title">Why <em>Li Zheng</em></h2>
+      </div>
+      <p class="section-sub" style="max-width:420px">We're not just a dealership. We're your long-term partner for everything automotive in Rwanda.</p>
+    </div>
+    <div class="why-grid">
+      <div class="why-cell"><div class="why-ico">🏆</div><div class="why-title">Certified Dealer</div><div class="why-text">Authorized distributor for BYD, Chery and Haval in Rwanda. Every vehicle comes with proper documentation.</div></div>
+      <div class="why-cell"><div class="why-ico">🔩</div><div class="why-title">Genuine Spare Parts</div><div class="why-text">Full OEM spare parts catalogue. We stock what you need and source what we don't within days.</div></div>
+      <div class="why-cell"><div class="why-ico">🛡️</div><div class="why-title">After-Sales Support</div><div class="why-text">Our team stays with you after the sale. Service, maintenance, parts — we've got you covered long-term.</div></div>
+      <div class="why-cell"><div class="why-ico">💳</div><div class="why-title">Flexible Financing</div><div class="why-text">We work with leading Rwandan banks and MFIs to get you the most affordable payment plan.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW TO BUY -->
+<section id="how">
+  <div class="section-wrap">
+    <div class="eyebrow" style="margin-bottom:1rem">The Process</div>
+    <h2 class="display-title" style="margin-bottom:4rem">How to <em>Buy</em></h2>
+    <div class="steps-row">
+      <div class="step"><div class="step-n">01</div><div class="step-t">Browse</div><div class="step-d">Explore our full inventory online or visit our showroom at Kicukiro-Sonatube</div></div>
+      <div class="step"><div class="step-n">02</div><div class="step-t">Inquire</div><div class="step-d">WhatsApp or call us. We respond within minutes and answer every question.</div></div>
+      <div class="step"><div class="step-n">03</div><div class="step-t">Test Drive</div><div class="step-d">Book a free test drive, feel the car, take your time. No pressure.</div></div>
+      <div class="step"><div class="step-n">04</div><div class="step-t">Drive Home</div><div class="step-d">Complete paperwork, arrange financing if needed, and drive your car home same day.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials">
+  <div class="section-wrap">
+    <div class="eyebrow">Client Stories</div>
+    <h2 class="display-title" style="margin-bottom:3rem">What They <em>Say</em></h2>
+    <div class="test-grid">
+      <div class="test-card"><div class="test-stars">★★★★★</div><p class="test-q">"The BYD Atto 3 has completely changed how I think about cars. Li Zheng walked me through everything — financing, insurance, registration. Exceptional service from start to finish."</p><div class="test-by"><div class="test-av">JM</div><div><div class="test-nm">Jean-Marie K.</div><div class="test-car-lbl">BYD Atto 3 · 2024</div></div></div></div>
+      <div class="test-card"><div class="test-stars">★★★★★</div><p class="test-q">"I was skeptical about Chinese cars. Three months with my Haval H6 later, I'm a convert. Fuel-efficient, spacious, and the team at Li Zheng is always available when I need them."</p><div class="test-by"><div class="test-av">AP</div><div><div class="test-nm">Aline P.</div><div class="test-car-lbl">Haval H6 Hybrid · 2023</div></div></div></div>
+      <div class="test-card"><div class="test-stars">★★★★★</div><p class="test-q">"Got genuine spare parts for my Chery Tiggo in one day. Fair prices, no waiting, no drama. Li Zheng is my first call for anything car-related in Kigali."</p><div class="test-by"><div class="test-av">EM</div><div><div class="test-nm">Emmanuel M.</div><div class="test-car-lbl">Chery Tiggo 8 · 2023</div></div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-grid">
+    <div class="contact-side">
+      <div class="eyebrow">Find Us</div>
+      <h2>Visit Our<br/><em>Showroom</em></h2>
+      <div class="ci"><div class="ci-ico">📍</div><div><div class="ci-lbl">Location</div><div class="ci-val">Kicukiro-Sonatube, Kigali, Rwanda</div></div></div>
+      <div class="ci"><div class="ci-ico">📞</div><div><div class="ci-lbl">Phone / WhatsApp</div><div class="ci-val"><a href="tel:+250781845376">+250 781 845 376</a></div></div></div>
+      <div class="ci"><div class="ci-ico">🕐</div><div><div class="ci-lbl">Working Hours</div><div class="ci-val">Mon–Sat 08:00–18:00 · Sun 09:00–14:00</div></div></div>
+      <div class="contact-btns">
+        <a href="https://wa.me/250781845376" target="_blank" class="btn-wa-full">
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          WhatsApp
+        </a>
+        <a href="https://www.instagram.com/lizhengautomobile_/" target="_blank" class="btn-social">📸 Instagram</a>
+        <a href="https://www.tiktok.com/@lizhengautomobile" target="_blank" class="btn-social">🎵 TikTok</a>
+      </div>
+    </div>
+    <div>
+      <div class="map-box">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3987.6!2d30.085!3d-1.985!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x19dca5c4b0da7a35%3A0x4a5d9e6a1f2b3c4d!2sKicukiro%2C%20Kigali!5e0!3m2!1sen!2srw!4v1620000000000!5m2!1sen!2srw" allowfullscreen loading="lazy" title="Li Zheng Location"></iframe>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="f-brand">
+        <div class="fn">LI ZHENG <em>AUTOMOBILE</em></div>
+        <div class="fl">Kicukiro-Sonatube · BYD · Chery · Haval · Kigali, Rwanda</div>
+      </div>
+      <nav class="f-links">
+        <a href="#all-cars" onclick="showMain()">Cars</a>
+        <a href="#spare-parts">Spare Parts</a>
+        <a href="#test-drive">Test Drive</a>
+        <a href="#why-us">About</a>
+        <a href="#contact">Contact</a>
+        <a href="https://www.instagram.com/lizhengautomobile_/" target="_blank">Instagram</a>
+        <a href="https://www.tiktok.com/@lizhengautomobile" target="_blank">TikTok</a>
+      </nav>
+    </div>
+    <div class="footer-bottom">
+      <div class="f-copy">© 2026 Li Zheng Automobile Ltd. All rights reserved.</div>
+      <div class="f-built">Built by <a href="https://eddie-portfolio-gamma.vercel.app" target="_blank">EDDIE NYAMBO</a></div>
+    </div>
+  </div>
+</footer>
+</div><!-- /main-site -->
+
+<!-- CAR DETAIL PAGE -->
+<div id="car-page">
+  <div class="car-pg-inner">
+    <div class="car-pg-back" onclick="showMain()">← Back to listings</div>
+    <div id="car-pg-content" class="car-pg-grid">
+      <div class="lds"><div class="spin"></div>Loading…</div>
+    </div>
+  </div>
+</div>
+
+<!-- COMPARE TRAY -->
+<div id="cmp-tray">
+  <div style="display:flex;align-items:center;gap:1.5rem">
+    <div class="tray-info">Comparing <span id="cmp-count">0</span> cars</div>
+    <div class="tray-thumbs" id="tray-thumbs"></div>
+  </div>
+  <div style="display:flex;gap:0.6rem">
+    <button class="btn-ghost" style="font-size:0.72rem;padding:0.55rem 1rem" onclick="clearCmp()">Clear</button>
+    <button class="btn-fill" style="font-size:0.72rem;padding:0.55rem 1.2rem" onclick="openCmp()">Compare →</button>
+  </div>
+</div>
+
+<!-- COMPARE MODAL -->
+<div id="cmp-modal">
+  <div class="cmp-inner">
+    <div class="cmp-hd">
+      <h2>Comparison</h2>
+      <div class="cmp-x" onclick="closeCmp()">✕</div>
+    </div>
+    <div style="overflow-x:auto">
+      <table class="cmp-table" id="cmp-table"></table>
+    </div>
+  </div>
+</div>
+
+<!-- WA FLOAT -->
+<a id="wa-float" href="https://wa.me/250781845376" target="_blank">
+  <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+
+<script>
+const SUPABASE_URL='https://kzwzmzcdbvqistjmlbip.supabase.co',SUPABASE_ANON='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt6d3ptemNkYnZxaXN0am1sYmlwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAxNDM2MDAsImV4cCI6MjA5NTcxOTYwMH0.hG9ZGDV5RbvnEUHvdRBv69rK9VLDK9d8Osz7pObCeZ8';
+const EMAILJS_SVC='YOUR_EMAILJS_SERVICE_ID',EMAILJS_TPL='YOUR_EMAILJS_TEMPLATE_ID',EMAILJS_KEY='YOUR_EMAILJS_PUBLIC_KEY';
+const WA='250781845376';
+let sb=null;
+if(SUPABASE_URL!=='YOUR_SUPABASE_URL'){sb=supabase.createClient(SUPABASE_URL,SUPABASE_ANON)}
+if(EMAILJS_KEY!=='YOUR_EMAILJS_PUBLIC_KEY'){emailjs.init(EMAILJS_KEY)}
+gsap.registerPlugin(ScrollTrigger);
+
+/* NAV */
+window.addEventListener('scroll',()=>document.getElementById('nav').classList.toggle('scrolled',scrollY>60),{passive:true});
+function toggleMenu(){document.getElementById('mobile-menu').classList.toggle('open')}
+
+/* GSAP */
+document.addEventListener('DOMContentLoaded',()=>{
+  gsap.from('.hero-eyebrow',{opacity:0,y:16,duration:0.7,delay:0.4});
+  gsap.from('#hero-h1',{opacity:0,y:40,duration:0.9,delay:0.6,ease:'power3.out'});
+  gsap.from('.hero-sub',{opacity:0,y:20,duration:0.6,delay:1.0});
+  gsap.from('.hero-btns > *',{opacity:0,y:16,duration:0.5,stagger:0.12,delay:1.2});
+  // Stats
+  ScrollTrigger.create({trigger:'#stats',start:'top 80%',once:true,onEnter:()=>{
+    document.querySelectorAll('.stat-n').forEach(el=>{
+      const t=parseInt(el.dataset.t),suf=el.querySelector('span')?.textContent||'';
+      let c=0;const step=Math.ceil(t/60);
+      const iv=setInterval(()=>{c=Math.min(c+step,t);el.innerHTML=c+'<span>'+suf+'</span>';if(c>=t)clearInterval(iv)},20);
+    });
+  }});
+  // Scroll reveals
+  gsap.utils.toArray('.why-cell,.step,.test-card,.part-cat-cell').forEach(el=>{
+    gsap.from(el,{opacity:0,y:24,duration:0.55,scrollTrigger:{trigger:el,start:'top 90%',once:true}});
+  });
+  initDatePicker();
+  loadFeatured();
+  loadAllCars();
+  loadParts();
+  checkRoute();
+});
+
+/* DATA */
+let allCars=[],shown=9,filtered=[];
+async function fetchCars(){
+  if(!sb)return demoCars();
+  const{data,error}=await sb.from('cars').select('*').order('created_at',{ascending:false});
+  return error?demoCars():data||[];
+}
+async function fetchParts(){
+  if(!sb)return[];
+  const{data}=await sb.from('spare_parts').select('*').order('created_at',{ascending:false});
+  return data||[];
+}
+
+/* FEATURED */
+async function loadFeatured(){
+  allCars=await fetchCars();
+  const feat=allCars.filter(c=>c.featured);
+  const g=document.getElementById('featured-grid');
+  g.innerHTML=feat.length?feat.map(carCard).join(''):`<div class="empty-msg"><h3>No Featured Cars</h3></div>`;
+  populateTDDropdown();
+}
+/* ALL */
+async function loadAllCars(){
+  if(!allCars.length)allCars=await fetchCars();
+  filtered=[...allCars];renderCars();
+}
+function filterCars(){
+  const q=document.getElementById('s-search').value.toLowerCase();
+  const mk=document.getElementById('s-make').value;
+  const bd=document.getElementById('s-body').value;
+  const fl=document.getElementById('s-fuel').value;
+  const so=document.getElementById('s-sort').value;
+  filtered=allCars.filter(c=>{
+    return(!q||(c.make+' '+c.model).toLowerCase().includes(q))&&
+           (!mk||c.make===mk)&&(!bd||c.body_type===bd)&&(!fl||c.fuel_type===fl);
+  });
+  if(so==='pa')filtered.sort((a,b)=>a.price-b.price);
+  if(so==='pd')filtered.sort((a,b)=>b.price-a.price);
+  shown=9;renderCars();
+}
+function renderCars(){
+  const g=document.getElementById('all-grid');
+  const sl=filtered.slice(0,shown);
+  g.innerHTML=sl.length?sl.map(carCard).join(''):`<div class="empty-msg"><h3>No Results</h3><p>Try adjusting filters</p></div>`;
+  document.getElementById('load-more-row').style.display=filtered.length>shown?'block':'none';
+}
+function loadMore(){shown+=9;renderCars()}
+
+/* CAR CARD */
+function carCard(c){
+  const img=c.images?.[0]||'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?w=600&q=60';
+  const inCmp=cmpList.some(x=>x.id===c.id);
+  return`<div class="car-card" id="cc-${c.id}">
+    <div class="car-img-wrap">
+      <img src="${h(img)}" alt="${h(c.make)} ${h(c.model)}" loading="lazy"/>
+      <div class="car-badge-wrap">
+        <span class="car-status-badge status-${c.status}">${c.status}</span>
+        <div class="compare-btn${inCmp?' on':''}" onclick="toggleCmp(event,'${c.id}')" title="Compare">CMP</div>
+      </div>
+    </div>
+    <div class="car-body">
+      <div class="car-make-tag">${h(c.make)}</div>
+      <div class="car-name">${h(c.model)} ${c.year}</div>
+      <div class="car-chips">
+        ${c.fuel_type?`<span class="chip">${h(c.fuel_type)}</span>`:''}
+        ${c.transmission?`<span class="chip">${h(c.transmission)}</span>`:''}
+        ${c.body_type?`<span class="chip">${h(c.body_type)}</span>`:''}
+        ${c.seats?`<span class="chip">${c.seats} Seats</span>`:''}
+      </div>
+      <div class="car-price-row">
+        <div class="car-price">${h(c.price_label)}</div>
+        <div class="car-year">${c.year}</div>
+      </div>
+      <div class="car-btns">
+        <a class="btn-view-car" href="/cars/${c.id}" onclick="event.preventDefault();goToCar('${c.id}')">View Details</a>
+        <button class="btn-wa-icon" onclick="waInq('${h(c.make)} ${h(c.model)} ${c.year}','${h(c.price_label)}')" title="WhatsApp">
+          <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>`;
+}
+
+/* ROUTING */
+function checkRoute(){const m=location.pathname.match(/^\/cars\/([^/]+)/);if(m)goToCar(m[1],false)}
+function goToCar(id,push=true){
+  if(push)history.pushState({id},``,`/cars/${id}`);
+  document.getElementById('main-site').style.display='none';
+  document.getElementById('car-page').classList.add('active');
+  scrollTo(0,0);
+  renderCarPage(id);
+}
+function showMain(){
+  history.pushState({},'','/');
+  document.getElementById('car-page').classList.remove('active');
+  document.getElementById('main-site').style.display='';
+  scrollTo(0,0);
+}
+window.addEventListener('popstate',()=>{
+  const m=location.pathname.match(/^\/cars\/([^/]+)/);
+  m?goToCar(m[1],false):showMain();
+});
+
+/* CAR PAGE */
+let galImgs=[],galIdx=0;
+async function renderCarPage(id){
+  const el=document.getElementById('car-pg-content');
+  el.className='car-pg-grid';
+  el.innerHTML=`<div class="lds" style="grid-column:1/-1"><div class="spin"></div>Loading…</div>`;
+  let car=allCars.find(c=>c.id===id);
+  if(!car&&sb){const{data}=await sb.from('cars').select('*').eq('id',id).single();car=data;if(car){allCars.push(car);sb.from('cars').update({views:(car.views||0)+1}).eq('id',id).then(()=>{})}}
+  if(!car){el.innerHTML=`<div style="padding:4rem;color:var(--text-muted)">Car not found.</div>`;return}
+  galImgs=car.images?.length?car.images:['https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?w=900&q=80'];
+  galIdx=0;
+  document.title=`${car.make} ${car.model} ${car.year} — Li Zheng Automobile`;
+  const specs=[['Make',car.make],['Model',car.model],['Year',car.year],['Body',car.body_type],['Fuel',car.fuel_type],['Gearbox',car.transmission],['Engine',car.engine_cc],['Seats',car.seats],['Color',car.color],['Mileage',car.mileage===0?'Brand New':car.mileage+' km']].filter(([,v])=>v!=null&&v!=='');
+  const wam=encodeURIComponent(`Hi Li Zheng Automobile, I'm interested in the ${car.make} ${car.model} ${car.year} (${car.price_label}). Please share more details.`);
+  el.innerHTML=`
+    <div>
+      <div class="gal-main"><img id="gal-img" src="${h(galImgs[0])}" alt="${h(car.make)} ${h(car.model)}"/>
+        ${galImgs.length>1?`<div class="gal-arr prev" onclick="galMove(-1)">‹</div><div class="gal-arr next" onclick="galMove(1)">›</div>`:''}
+      </div>
+      <div class="gal-dots">${galImgs.map((_,i)=>`<div class="gal-dot${i===0?' on':''}" onclick="galGo(${i})"></div>`).join('')}</div>
+      ${galImgs.length>1?`<div class="gal-thumbs">${galImgs.map((img,i)=>`<div class="gal-thumb${i===0?' on':''}" onclick="galGo(${i})"><img src="${h(img)}" loading="lazy"/></div>`).join('')}</div>`:''}
+    </div>
+    <div class="car-pg-info">
+      <div class="cpg-make">${h(car.make)}</div>
+      <div class="cpg-name">${h(car.model)}</div>
+      <div class="cpg-year">${car.year} · ${car.body_type||''} · ${car.fuel_type||''}</div>
+      <div class="cpg-price">${h(car.price_label)}</div>
+      <ul class="specs-list">${specs.map(([k,v])=>`<li><span>${k}</span><span>${h(String(v))}</span></li>`).join('')}</ul>
+      ${car.features?.length?`<div class="cpg-features">${car.features.map(f=>`<span class="cpg-chip">${h(f)}</span>`).join('')}</div>`:''}
+      ${car.description?`<p class="cpg-desc">${h(car.description)}</p>`:''}
+      <div class="cpg-ctas">
+        <a href="https://wa.me/${WA}?text=${wam}" target="_blank" class="btn-fill">Inquire on WhatsApp →</a>
+        <a href="tel:+${WA}" class="btn-ghost">Call Us</a>
+      </div>
+      <div class="cpg-views">${(car.views||0)+1} people viewed this car</div>
+      <div class="calc-box">
+        <h4>Finance Calculator</h4>
+        <div class="calc-grid">
+          <div class="calc-f"><label>Car Price (RWF)</label><input id="cp" type="number" value="${car.price}" oninput="calcNow()"/></div>
+          <div class="calc-f"><label>Down Payment (RWF)</label><input id="cd" type="number" value="${Math.round(car.price*0.2)}" oninput="calcNow()"/></div>
+          <div class="calc-f"><label>Interest Rate (%/yr)</label><input id="cr" type="number" value="18" step="0.5" oninput="calcNow()"/></div>
+          <div class="calc-f"><label>Term (months)</label><input id="ct" type="number" value="48" oninput="calcNow()"/></div>
+        </div>
+        <div class="calc-out">
+          <div class="calc-cell"><div class="calc-v" id="cv-m">—</div><div class="calc-l">Monthly</div></div>
+          <div class="calc-cell"><div class="calc-v" id="cv-i">—</div><div class="calc-l">Interest</div></div>
+          <div class="calc-cell"><div class="calc-v" id="cv-t">—</div><div class="calc-l">Total</div></div>
+        </div>
+        <button class="btn-ghost" style="width:100%;margin-top:0.75rem;font-size:0.72rem;justify-content:center;padding:0.6rem" onclick="calcWA('${h(car.make+' '+car.model+' '+car.year)}')">Apply for Financing via WhatsApp →</button>
+      </div>
+      ${car.walkround_url?`<div class="walkround-box"><h4>360° Walkround</h4><div class="wk-frame"><iframe src="${ytEmbed(car.walkround_url)}" allowfullscreen loading="lazy"></iframe></div></div>`:''}
+    </div>`;
+  calcNow();
+}
+function galMove(d){galGo((galIdx+d+galImgs.length)%galImgs.length)}
+function galGo(i){
+  galIdx=i;
+  document.getElementById('gal-img').src=galImgs[i];
+  document.querySelectorAll('.gal-dot').forEach((el,j)=>el.classList.toggle('on',j===i));
+  document.querySelectorAll('.gal-thumb').forEach((el,j)=>el.classList.toggle('on',j===i));
+}
+function ytEmbed(url){const m=url.match(/(?:youtu\.be\/|youtube\.com\/watch\?v=|youtube\.com\/embed\/)([^&?/]+)/);return m?`https://www.youtube.com/embed/${m[1]}`:url}
+
+/* CALC */
+function calcNow(){
+  const p=parseFloat(document.getElementById('cp')?.value)||0;
+  const d=parseFloat(document.getElementById('cd')?.value)||0;
+  const r=parseFloat(document.getElementById('cr')?.value)||0;
+  const n=parseInt(document.getElementById('ct')?.value)||1;
+  const pr=Math.max(0,p-d);const mr=r/100/12;
+  const mo=mr===0?pr/n:pr*mr*Math.pow(1+mr,n)/(Math.pow(1+mr,n)-1);
+  const ti=mo*n-pr,tot=mo*n+d;
+  const fmt=v=>'RWF '+Math.round(v).toLocaleString();
+  document.getElementById('cv-m').textContent=fmt(mo);
+  document.getElementById('cv-i').textContent=fmt(ti);
+  document.getElementById('cv-t').textContent=fmt(tot);
+}
+function calcWA(name){
+  const m=document.getElementById('cv-m')?.textContent||'';
+  const t=document.getElementById('cv-t')?.textContent||'';
+  open(`https://wa.me/${WA}?text=${encodeURIComponent(`Hi Li Zheng, I'd like financing for the ${name}. Monthly: ${m}, Total: ${t}.`)},'_blank'`);
+}
+
+/* COMPARE */
+let cmpList=[];
+function toggleCmp(e,id){
+  e.stopPropagation();
+  const car=allCars.find(c=>c.id===id);if(!car)return;
+  const ix=cmpList.findIndex(c=>c.id===id);
+  if(ix>-1)cmpList.splice(ix,1);
+  else{if(cmpList.length>=3){alert('Max 3 cars');return}cmpList.push(car)}
+  document.querySelectorAll(`#cc-${id} .compare-btn`).forEach(b=>b.classList.toggle('on',cmpList.some(c=>c.id===id)));
+  updateTray();
+}
+function updateTray(){
+  const tray=document.getElementById('cmp-tray');
+  document.getElementById('cmp-count').textContent=cmpList.length;
+  if(cmpList.length<2){tray.classList.remove('open');return}
+  tray.classList.add('open');
+  document.getElementById('tray-thumbs').innerHTML=cmpList.map(c=>`
+    <div class="tray-thumb">
+      <img src="${h(c.images?.[0]||'')}" />
+      <div class="tray-rm" onclick="toggleCmp(event,'${c.id}')">×</div>
+    </div>`).join('');
+}
+function clearCmp(){cmpList=[];updateTray();document.querySelectorAll('.compare-btn').forEach(b=>b.classList.remove('on'))}
+function openCmp(){
+  const rows=[['Price','price_label'],['Body','body_type'],['Fuel','fuel_type'],['Gearbox','transmission'],['Engine','engine_cc'],['Seats','seats'],['Color','color']];
+  const tb=document.getElementById('cmp-table');
+  let html=`<thead><tr><th>Spec</th>${cmpList.map(c=>`<th><div class="cmp-car-th"><img src="${h(c.images?.[0]||'')}"/><div class="n">${h(c.make)} ${h(c.model)}</div></div></th>`).join('')}</tr></thead><tbody>`;
+  rows.forEach(([lbl,k])=>{
+    const vals=cmpList.map(c=>String(c[k]||'—'));
+    const same=vals.every(v=>v===vals[0]);
+    html+=`<tr><td>${lbl}</td>${vals.map(v=>`<td class="${!same?'cmp-diff':''}">${h(v)}</td>`).join('')}</tr>`;
+  });
+  html+=`</tbody>`;tb.innerHTML=html;
+  document.getElementById('cmp-modal').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeCmp(){document.getElementById('cmp-modal').classList.remove('open');document.body.style.overflow=''}
+
+/* PARTS */
+async function loadParts(){
+  const parts=await fetchParts();
+  const g=document.getElementById('parts-grid');
+  if(!parts.length){g.innerHTML=`<div class="empty-msg" style="grid-column:1/-1"><h3>Parts catalog coming soon</h3><p style="color:var(--text-muted);font-size:0.83rem;margin-top:0.5rem">WhatsApp us for availability</p></div>`;return}
+  g.innerHTML=parts.map(p=>`
+    <div class="part-card">
+      <div class="part-top"><div class="part-name">${h(p.name)}</div><span class="part-cat-tag">${h(p.category)}</span></div>
+      ${p.compatible?`<div class="part-compat">Fits: ${h(p.compatible)}</div>`:''}
+      <div class="part-btm">
+        <div>
+          <div class="part-price">${p.price_label?h(p.price_label):'Call for price'}</div>
+          <div class="${p.in_stock?'part-stock-ok':'part-stock-no'}">${p.in_stock?'✓ In Stock':'✗ Out of Stock'}</div>
+        </div>
+        <button class="part-req" onclick="open('https://wa.me/${WA}?text='+encodeURIComponent('Hi Li Zheng, I need: ${h(p.name)}. Available?'),'_blank')">Request</button>
+      </div>
+    </div>`).join('');
+}
+
+/* TEST DRIVE */
+function initDatePicker(){const d=document.getElementById('td-date');if(d)d.min=new Date().toISOString().split('T')[0]}
+function populateTDDropdown(){
+  const s=document.getElementById('td-car');if(!s)return;
+  const avail=allCars.filter(c=>c.status==='available');
+  s.innerHTML=avail.length?`<option value="">Select car…</option>`+avail.map(c=>`<option>${c.make} ${c.model} ${c.year}</option>`).join(''):`<option>Any available car</option>`;
+}
+async function submitTD(){
+  const name=document.getElementById('td-name').value.trim();
+  const phone=document.getElementById('td-phone').value.trim();
+  const car=document.getElementById('td-car').value;
+  const date=document.getElementById('td-date').value;
+  const time=document.getElementById('td-time').value;
+  const email=document.getElementById('td-email').value.trim();
+  const msg=document.getElementById('td-msg').value.trim();
+  if(!name||!phone||!date||!time){alert('Please fill in all required fields.');return}
+  const fd=new Date(date).toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  if(sb)await sb.from('inquiries').insert({type:'test_drive',car_name:car||'Any',name,phone,email:email||null,message:`${fd} at ${time}. ${msg}`});
+  if(EMAILJS_SVC!=='YOUR_EMAILJS_SERVICE_ID')emailjs.send(EMAILJS_SVC,EMAILJS_TPL,{from_name:name,phone,car_name:car||'Any',message:`Test Drive: ${fd} at ${time}. ${msg}`,type:'Test Drive'});
+  document.getElementById('td-wrap').style.display='none';
+  document.getElementById('td-ok').style.display='block';
+}
+
+/* WA */
+function waInq(name,price){open(`https://wa.me/${WA}?text=${encodeURIComponent(`Hi Li Zheng, I'm interested in the ${name} (${price}). Please share availability.`)},'_blank'`)}
+
+/* DEMO */
+function demoCars(){return[
+  {id:'d1',make:'BYD',model:'Atto 3',year:2024,price:32000000,price_label:'RWF 32,000,000',body_type:'SUV',fuel_type:'Electric',transmission:'Automatic',color:'White',engine_cc:'150kW',seats:5,mileage:0,description:'Fully electric SUV. 420km range.',features:['420km Range','Fast Charging','Panoramic Sunroof'],images:['https://images.unsplash.com/photo-1555215695-3004980ad54e?w=700&q=70'],status:'available',featured:true,views:0,created_at:new Date().toISOString()},
+  {id:'d2',make:'Chery',model:'Tiggo 8 Pro',year:2024,price:28500000,price_label:'RWF 28,500,000',body_type:'SUV',fuel_type:'Petrol',transmission:'Automatic',color:'Black',engine_cc:'1.6T',seats:7,mileage:0,description:'7-seater SUV.',features:['7 Seats','ADAS'],images:['https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=700&q=70'],status:'available',featured:true,views:0,created_at:new Date().toISOString()},
+  {id:'d3',make:'Haval',model:'H6 Hybrid',year:2023,price:24000000,price_label:'RWF 24,000,000',body_type:'SUV',fuel_type:'Hybrid',transmission:'Automatic',color:'Silver',engine_cc:'1.5T HEV',seats:5,mileage:0,description:'Hybrid. 1000km range.',features:['Hybrid','ADAS'],images:['https://images.unsplash.com/photo-1609521263047-f8f205293f24?w=700&q=70'],status:'available',featured:true,views:0,created_at:new Date().toISOString()},
+]}
+
+/* UTILS */
+function h(s){if(!s)return'';return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+</script>
+</body>
+</html>
