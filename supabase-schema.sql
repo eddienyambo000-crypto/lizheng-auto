@@ -56,15 +56,29 @@ create table if not exists inquiries (
   created_at  timestamptz not null default now()
 );
 
+-- Testimonials table
+create table if not exists testimonials (
+  id          uuid primary key default gen_random_uuid(),
+  name        text not null,
+  initials    text,
+  car_label   text,
+  message     text not null,
+  approved    boolean not null default false,
+  created_at  timestamptz not null default now()
+);
+
 -- ── Row Level Security ──────────────────────────────────
 alter table cars enable row level security;
 alter table spare_parts enable row level security;
 alter table inquiries enable row level security;
+alter table testimonials enable row level security;
 
 create policy "Public read cars" on cars for select using (true);
 create policy "Public read parts" on spare_parts for select using (true);
 create policy "Public insert inquiries" on inquiries for insert with check (true);
 create policy "Public read inquiries" on inquiries for select using (true);
+create policy "Public read approved testimonials" on testimonials for select using (approved = true);
+create policy "Public insert testimonials" on testimonials for insert with check (true);
 
 -- ── Seed demo cars ──────────────────────────────────────
 insert into cars (make, model, year, price, price_label, body_type, fuel_type, transmission, color, engine_cc, seats, mileage, description, features, images, status, featured) values

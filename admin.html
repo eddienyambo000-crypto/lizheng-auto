@@ -225,6 +225,10 @@ td{padding:0.8rem 1rem;vertical-align:middle;font-size:0.82rem;color:var(--text)
         <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2v10z"/></svg>
         Inquiries
       </div>
+      <div class="sb-item" onclick="nav('testimonials')" id="sb-testimonials">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg>
+        Reviews
+      </div>
     </nav>
     <div class="sb-footer">
       <button class="logout-btn" onclick="doLogout()">
@@ -328,6 +332,28 @@ td{padding:0.8rem 1rem;vertical-align:middle;font-size:0.82rem;color:var(--text)
         <table>
           <thead><tr><th>Date</th><th>Type</th><th>Name</th><th>Phone</th><th>Car / Part</th><th>Message</th><th>Actions</th></tr></thead>
           <tbody id="inq-tbody"><tr class="empty-row"><td colspan="7"><div class="ld"><div class="spin"></div>Loading…</div></td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- TESTIMONIALS -->
+    <div class="view" id="view-testimonials">
+      <div class="pg-hd"><h1>Reviews</h1><p>Approve client reviews before they appear on the website</p></div>
+      <div class="toolbar">
+        <select id="test-filter-f" onchange="filterTestimonialsAdmin()">
+          <option value="">All Reviews</option>
+          <option value="true">Approved — Live</option>
+          <option value="false">Pending Review</option>
+        </select>
+        <button class="btn btn-red" onclick="openAddTestimonial()">
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+          Add Review
+        </button>
+      </div>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Name</th><th>Car / Service</th><th>Review</th><th>Status</th><th>Date</th><th>Actions</th></tr></thead>
+          <tbody id="test-tbody"><tr class="empty-row"><td colspan="6"><div class="ld"><div class="spin"></div>Loading…</div></td></tr></tbody>
         </table>
       </div>
     </div>
@@ -436,6 +462,34 @@ td{padding:0.8rem 1rem;vertical-align:middle;font-size:0.82rem;color:var(--text)
 </div>
 
 
+<!-- TESTIMONIAL FORM PANEL -->
+<div id="test-panel" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:1000;backdrop-filter:blur(6px);padding:1rem;overflow-y:auto;align-items:flex-start;justify-content:center">
+  <div class="form-card" style="max-width:560px">
+    <h2 id="test-form-title">Add Review</h2>
+    <div class="fsub">Approved reviews appear live on the website.</div>
+    <input type="hidden" id="te-id"/>
+    <div class="fg">
+      <div class="f-item"><label>Name <em>*</em></label><input id="te-name" placeholder="e.g. Jean-Pierre K."/></div>
+      <div class="f-item"><label>Car / Service</label><input id="te-car" placeholder="e.g. BYD Atto 3 · 2024"/></div>
+      <div class="f-item"><label>Initials (auto if blank)</label><input id="te-initials" placeholder="e.g. JK" maxlength="2"/></div>
+      <div class="f-item"><label>Status</label>
+        <select id="te-approved">
+          <option value="true">Approved — show on site</option>
+          <option value="false">Pending — hidden</option>
+        </select>
+      </div>
+      <div class="f-item f-full"><label>Review Message <em>*</em></label><textarea id="te-msg" placeholder="Client's experience in their own words…"></textarea></div>
+    </div>
+    <div class="form-acts">
+      <button class="btn btn-border" onclick="closeTestForm()">Cancel</button>
+      <button class="btn btn-red" id="save-test-btn" onclick="saveTestimonial()">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><path d="M5 13l4 4L19 7"/></svg>
+        Save Review
+      </button>
+    </div>
+  </div>
+</div>
+
 <!-- DELETE CONFIRM -->
 <div id="del-dialog">
   <div class="del-box">
@@ -481,7 +535,7 @@ if(sessionStorage.getItem('lz_admin')==='1'){document.getElementById('login').cl
 /* ══ NAV ═════════════════════════════════════════════════ */
 let curView='dashboard';
 function nav(v){
-  ['dashboard','cars','parts','inquiries'].forEach(n=>{
+  ['dashboard','cars','parts','inquiries','testimonials'].forEach(n=>{
     document.getElementById('view-'+n).classList.toggle('on',n===v);
     document.getElementById('sb-'+n).classList.toggle('on',n===v);
   });
@@ -490,6 +544,7 @@ function nav(v){
   if(v==='cars')loadCarsAdmin();
   if(v==='parts')loadPartsAdmin();
   if(v==='inquiries')loadInqAdmin();
+  if(v==='testimonials')loadTestimonialsAdmin();
 }
 window.addEventListener('DOMContentLoaded',()=>{if(sessionStorage.getItem('lz_admin')==='1')loadDashboard()});
 
@@ -832,18 +887,94 @@ function closeDel(){document.getElementById('del-dialog').classList.remove('open
 async function doDel(){
   const type=delType,id=delId;closeDel();
   if(db){
-    const tbl=type==='car'?'cars':'spare_parts';
+    const tbl=type==='car'?'cars':type==='testimonial'?'testimonials':'spare_parts';
     const{error}=await db.from(tbl).delete().eq('id',id);
     if(error){toast('Delete failed: '+error.message,'err');return}
   }
   if(type==='car')allCars=allCars.filter(c=>c.id!==id);
+  else if(type==='testimonial')allTests=allTests.filter(t=>t.id!==id);
   else allParts=allParts.filter(p=>p.id!==id);
   toast('Deleted successfully','ok');
   if(curView==='dashboard')loadDashboard();
   else if(type==='car')filterCarsAdmin();
+  else if(type==='testimonial')filterTestimonialsAdmin();
   else filterPartsAdmin();
 }
 
+
+/* ══ TESTIMONIALS ════════════════════════════════════════ */
+let allTests=[];
+async function fetchTests(){
+  if(!db){allTests=[];return}
+  const{data}=await db.from('testimonials').select('*').order('created_at',{ascending:false});
+  allTests=data||[];
+}
+async function loadTestimonialsAdmin(){await fetchTests();filterTestimonialsAdmin()}
+function filterTestimonialsAdmin(){
+  const f=document.getElementById('test-filter-f').value;
+  const list=f===''?allTests:allTests.filter(t=>String(t.approved)===f);
+  const tbody=document.getElementById('test-tbody');
+  if(!list.length){tbody.innerHTML=`<tr class="empty-row"><td colspan="6" style="text-align:center;padding:2.5rem;color:var(--muted)">No reviews found.</td></tr>`;return}
+  tbody.innerHTML=list.map(t=>`<tr>
+    <td data-l="Name" style="font-weight:500">${h(t.name)}</td>
+    <td data-l="Car/Service" style="color:var(--muted);font-size:0.78rem">${t.car_label?h(t.car_label):'—'}</td>
+    <td data-l="Review" style="color:var(--muted);font-size:0.78rem;max-width:220px">${h((t.message||'').slice(0,100))}${(t.message||'').length>100?'…':''}</td>
+    <td data-l="Status"><span class="badge ${t.approved?'badge-sale':'badge-rent'}">${t.approved?'Live':'Pending'}</span></td>
+    <td data-l="Date" style="font-size:0.75rem;color:var(--muted)">${fmtDate(t.created_at)}</td>
+    <td data-l="Actions" style="display:flex;gap:0.4rem;flex-wrap:wrap">
+      <button class="btn btn-border" style="font-size:0.68rem;padding:0.3rem 0.65rem" onclick="toggleTestApproval('${t.id}',${t.approved})">${t.approved?'Unpublish':'Approve'}</button>
+      <button class="btn btn-border" style="font-size:0.68rem;padding:0.3rem 0.65rem" onclick="openEditTest('${t.id}')">Edit</button>
+      <button class="btn btn-danger" style="font-size:0.68rem;padding:0.3rem 0.65rem" onclick="confirmDel('testimonial','${t.id}','${h(t.name)}')">Del</button>
+    </td>
+  </tr>`).join('');
+}
+async function toggleTestApproval(id,cur){
+  if(db){const{error}=await db.from('testimonials').update({approved:!cur}).eq('id',id);if(error){toast('Update failed','err');return}}
+  const t=allTests.find(t=>t.id===id);if(t)t.approved=!cur;
+  filterTestimonialsAdmin();toast(!cur?'Review approved — now live on site':'Review hidden','ok');
+}
+let editingTestId=null;
+function openAddTestimonial(){
+  editingTestId=null;
+  document.getElementById('test-form-title').textContent='Add Review';
+  ['te-id','te-name','te-car','te-msg','te-initials'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('te-approved').value='true';
+  document.getElementById('test-panel').style.display='flex';
+  document.body.style.overflow='hidden';
+}
+function openEditTest(id){
+  const t=allTests.find(t=>t.id===id);if(!t)return;
+  editingTestId=id;
+  document.getElementById('test-form-title').textContent='Edit Review';
+  document.getElementById('te-id').value=id;
+  document.getElementById('te-name').value=t.name||'';
+  document.getElementById('te-car').value=t.car_label||'';
+  document.getElementById('te-msg').value=t.message||'';
+  document.getElementById('te-initials').value=t.initials||'';
+  document.getElementById('te-approved').value=String(t.approved);
+  document.getElementById('test-panel').style.display='flex';
+  document.body.style.overflow='hidden';
+}
+function closeTestForm(){document.getElementById('test-panel').style.display='none';document.body.style.overflow='';editingTestId=null}
+async function saveTestimonial(){
+  const name=document.getElementById('te-name').value.trim();
+  const msg=document.getElementById('te-msg').value.trim();
+  if(!name||!msg){toast('Name and message are required','err');return}
+  const btn=document.getElementById('save-test-btn');btn.textContent='Saving…';btn.disabled=true;
+  const initials=document.getElementById('te-initials').value.trim()||name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
+  const payload={name,initials,car_label:document.getElementById('te-car').value.trim()||null,message:msg,approved:document.getElementById('te-approved').value==='true'};
+  btn.textContent='Save Review';btn.disabled=false;
+  if(!db){
+    if(editingTestId)Object.assign(allTests.find(t=>t.id===editingTestId),payload);
+    else allTests.unshift({id:'t-'+Date.now(),...payload,created_at:new Date().toISOString()});
+    closeTestForm();toast(editingTestId?'Review updated!':'Review added!','ok');filterTestimonialsAdmin();return;
+  }
+  let error;
+  if(editingTestId){({error}=await db.from('testimonials').update(payload).eq('id',editingTestId))}
+  else{({error}=await db.from('testimonials').insert(payload))}
+  if(error){toast('Save failed: '+error.message,'err');return}
+  closeTestForm();toast(editingTestId?'Review updated!':'Review added!','ok');await fetchTests();filterTestimonialsAdmin();
+}
 
 /* ══ UTILS ═══════════════════════════════════════════════ */
 function h(s){if(!s)return'';return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}

@@ -93,7 +93,10 @@ button{font-family:var(--font)}
   overflow:hidden;background:#000;
 }
 #hero-video{
-  position:absolute;inset:0;width:100%;height:100%;
+  position:absolute;top:50%;left:50%;
+  min-width:100%;min-height:100%;
+  width:auto;height:auto;
+  transform:translate(-50%,-50%);
   object-fit:cover;z-index:0;opacity:0.55;
 }
 .hero-grad{
@@ -450,8 +453,10 @@ section{padding:9rem 0}
 .contact-btns{display:flex;flex-wrap:wrap;gap:0.6rem;margin-top:2rem}
 .btn-wa-full{display:inline-flex;align-items:center;gap:0.5rem;padding:0.7rem 1.4rem;background:#25D366;color:#fff;font-family:var(--font-h);font-weight:700;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.1em;border-radius:2px;transition:opacity 0.2s}
 .btn-wa-full:hover{opacity:0.88}
-.btn-social{display:inline-flex;align-items:center;gap:0.4rem;padding:0.7rem 1.2rem;background:transparent;border:1px solid var(--border);color:rgba(255,255,255,0.6);font-family:var(--font-h);font-weight:600;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.1em;border-radius:2px;transition:all 0.2s}
-.btn-social:hover{border-color:rgba(255,255,255,0.25);color:#fff}
+.btn-social{display:inline-flex;align-items:center;gap:0.5rem;padding:0.65rem 1.2rem;background:transparent;border:1px solid var(--border);color:rgba(255,255,255,0.6);font-family:var(--font-h);font-weight:600;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.1em;border-radius:2px;transition:all 0.25s}
+.btn-social svg{flex-shrink:0;transition:color 0.25s}
+.btn-ig:hover{border-color:#E1306C;color:#E1306C}
+.btn-tt:hover{border-color:#69C9D0;color:#69C9D0}
 .map-box{border-radius:2px;overflow:hidden;border:1px solid var(--border);height:380px}
 .map-box iframe{width:100%;height:100%;border:none;filter:grayscale(0.8) contrast(1.2)}
 
@@ -493,6 +498,7 @@ footer{background:#000;border-top:1px solid var(--border);padding:3.5rem 3rem 2.
   .stats-row{grid-template-columns:repeat(2,1fr)}
 }
 @media(max-width:900px){
+  #write-review .section-wrap > div{grid-template-columns:1fr!important;gap:2.5rem!important}
   .cars-grid{grid-template-columns:repeat(2,1fr)}
   .why-grid{grid-template-columns:repeat(2,1fr)}
   .car-pg-grid{grid-template-columns:1fr;gap:2.5rem}
@@ -504,6 +510,7 @@ footer{background:#000;border-top:1px solid var(--border);padding:3.5rem 3rem 2.
   .test-grid{grid-template-columns:repeat(2,1fr)}
 }
 @media(max-width:768px){
+  #hero{height:100dvh;min-height:500px}
   .nav-links{display:none}
   .hamburger{display:flex}
   .hero-content{padding:0 1.5rem 4rem}
@@ -570,7 +577,7 @@ footer{background:#000;border-top:1px solid var(--border);padding:3.5rem 3rem 2.
 
 <!-- HERO -->
 <section id="hero">
-  <video id="hero-video" autoplay muted loop playsinline preload="none">
+  <video id="hero-video" autoplay muted loop playsinline preload="auto">
     <source src="brand_assets/hero-video.mp4" type="video/mp4" />
     <source src="https://player.vimeo.com/external/517090081.hd.mp4?s=5c9aba91bca3e804ece45f11e65ede1e8e74c6fb&profile_id=175&oauth2_token_id=57447761" type="video/mp4" />
   </video>
@@ -818,21 +825,39 @@ footer{background:#000;border-top:1px solid var(--border);padding:3.5rem 3rem 2.
   <div class="section-wrap">
     <div class="eyebrow">Client Stories</div>
     <h2 class="display-title" style="margin-bottom:3rem">What They <em>Say</em></h2>
-    <div class="test-grid">
-      <div class="test-card">
-        <div class="test-stars">★★★★★</div>
-        <p class="test-q">"I applied for a bank loan through BPR and had no idea where to start with the vehicle documentation. Li Zheng handled the entire file — valuation, proforma, everything. The loan was approved in under two weeks and I drove home in my BYD Atto 3."</p>
-        <div class="test-by"><div class="test-av">JK</div><div><div class="test-nm">Jean-Claude K.</div><div class="test-car-lbl">BYD Atto 3 · 2024</div></div></div>
+    <div class="test-grid" id="test-grid">
+      <div class="lds"><div class="spin"></div>Loading reviews…</div>
+    </div>
+  </div>
+</section>
+
+<!-- WRITE A REVIEW -->
+<section id="write-review" style="background:var(--bg);padding:6rem 0;border-top:1px solid var(--border)">
+  <div class="section-wrap">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:start">
+      <div>
+        <div class="eyebrow">Your Turn</div>
+        <h2 class="display-title" style="margin-bottom:1rem">Bought From<br/><em>Us?</em></h2>
+        <p style="font-size:0.9rem;color:var(--text-muted);line-height:1.75;font-weight:300">Share your experience and help other Kigali drivers make the right choice. All reviews are verified before going live.</p>
       </div>
-      <div class="test-card">
-        <div class="test-stars">★★★★★</div>
-        <p class="test-q">"I drove the Haval H6 from Kicukiro all the way to Musanze and back on a single tank. 800 kilometres. The team at Li Zheng told me exactly what to expect and they were right. Honest people, good cars — I've already referred three colleagues."</p>
-        <div class="test-by"><div class="test-av">AP</div><div><div class="test-nm">Aline P.</div><div class="test-car-lbl">Haval H6 Hybrid · 2023</div></div></div>
-      </div>
-      <div class="test-card">
-        <div class="test-stars">★★★★★</div>
-        <p class="test-q">"My Chery Tiggo needed a specific part that no one in Kigali had in stock. I WhatsApped Li Zheng at 9am and had the genuine OEM part in my hands by 2pm the same day. That kind of service is rare and I won't go anywhere else."</p>
-        <div class="test-by"><div class="test-av">EM</div><div><div class="test-nm">Emmanuel M.</div><div class="test-car-lbl">Chery Tiggo 8 · 2023</div></div></div>
+      <div>
+        <div class="form-wrap">
+          <div id="rv-form-wrap">
+            <div class="form-grid" style="margin-bottom:1rem">
+              <div class="f-field"><label>Your Name <em>*</em></label><input id="rv-name" placeholder="e.g. Jean-Pierre K." /></div>
+              <div class="f-field"><label>Car / Service Used</label><input id="rv-car" placeholder="e.g. BYD Atto 3 · 2024" /></div>
+              <div class="f-field full"><label>Your Experience <em>*</em></label><textarea id="rv-msg" style="min-height:110px" placeholder="What was your experience with Li Zheng Automobile?"></textarea></div>
+              <div class="f-field full">
+                <button class="btn-fill" style="width:100%;justify-content:center;padding:1rem;font-size:0.82rem" onclick="submitReview()">Submit Review →</button>
+              </div>
+            </div>
+          </div>
+          <div id="rv-ok" class="form-success" style="display:none">
+            <div class="check"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" style="width:48px;height:48px;color:var(--red-light);margin:0 auto"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
+            <h3>Review Submitted</h3>
+            <p>Thank you. Your review will appear on the site after we confirm it.</p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -852,8 +877,14 @@ footer{background:#000;border-top:1px solid var(--border);padding:3.5rem 3rem 2.
           <svg viewBox="0 0 24 24" width="15" height="15" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
           WhatsApp
         </a>
-        <a href="https://www.instagram.com/lizhengautomobile_/" target="_blank" class="btn-social">📸 Instagram</a>
-        <a href="https://www.tiktok.com/@lizhengautomobile" target="_blank" class="btn-social">🎵 TikTok</a>
+        <a href="https://www.instagram.com/lizhengautomobile_/" target="_blank" rel="noopener" class="btn-social btn-ig">
+          <svg viewBox="0 0 24 24" fill="currentColor" style="width:15px;height:15px"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+          Instagram
+        </a>
+        <a href="https://www.tiktok.com/@lizhengautomobile" target="_blank" rel="noopener" class="btn-social btn-tt">
+          <svg viewBox="0 0 24 24" fill="currentColor" style="width:15px;height:15px"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.95a8.16 8.16 0 004.77 1.52V7.01a4.85 4.85 0 01-1-.32z"/></svg>
+          TikTok
+        </a>
       </div>
     </div>
     <div>
@@ -879,8 +910,8 @@ footer{background:#000;border-top:1px solid var(--border);padding:3.5rem 3rem 2.
         <a href="#test-drive">Test Drive</a>
         <a href="#why-us">About</a>
         <a href="#contact">Contact</a>
-        <a href="https://www.instagram.com/lizhengautomobile_/" target="_blank">Instagram</a>
-        <a href="https://www.tiktok.com/@lizhengautomobile" target="_blank">TikTok</a>
+        <a href="https://www.instagram.com/lizhengautomobile_/" target="_blank" rel="noopener">Instagram</a>
+        <a href="https://www.tiktok.com/@lizhengautomobile" target="_blank" rel="noopener">TikTok</a>
       </nav>
     </div>
     <div class="footer-bottom">
@@ -933,11 +964,19 @@ footer{background:#000;border-top:1px solid var(--border);padding:3.5rem 3rem 2.
 
 <script>
 const SUPABASE_URL='https://kzwzmzcdbvqistjmlbip.supabase.co',SUPABASE_ANON='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt6d3ptemNkYnZxaXN0am1sYmlwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAxNDM2MDAsImV4cCI6MjA5NTcxOTYwMH0.hG9ZGDV5RbvnEUHvdRBv69rK9VLDK9d8Osz7pObCeZ8';
-const FORMSPREE_TD='YOUR_FORMSPREE_ID';
+const FORMSPREE_TD='xqejoybj';
 const WA='250781845376';
 let sb=null;
 if(SUPABASE_URL!=='YOUR_SUPABASE_URL'){sb=supabase.createClient(SUPABASE_URL,SUPABASE_ANON)}
 gsap.registerPlugin(ScrollTrigger);
+
+/* VIDEO */
+(function(){
+  const v=document.getElementById('hero-video');
+  if(!v)return;
+  v.play().catch(()=>{});
+  v.addEventListener('ended',function(){this.currentTime=0;this.play()});
+})();
 
 /* NAV */
 window.addEventListener('scroll',()=>document.getElementById('nav').classList.toggle('scrolled',scrollY>60),{passive:true});
@@ -965,6 +1004,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   loadFeatured();
   loadAllCars();
   loadParts();
+  loadTestimonials();
   checkRoute();
 });
 
@@ -1219,6 +1259,47 @@ async function submitTD(){
 
 /* WA */
 function waInq(name,price){open(`https://wa.me/${WA}?text=${encodeURIComponent(`Hi Li Zheng, I'm interested in the ${name} (${price}). Please share availability.`)},'_blank'`)}
+
+/* TESTIMONIALS */
+async function loadTestimonials(){
+  const g=document.getElementById('test-grid');if(!g)return;
+  if(sb){
+    const{data}=await sb.from('testimonials').select('*').eq('approved',true).order('created_at',{ascending:false});
+    if(data&&data.length){g.innerHTML=data.map(testCard).join('');return}
+  }
+  g.innerHTML=defaultTestimonials();
+}
+function testCard(t){
+  const ini=t.initials||(t.name||'?').split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
+  return`<div class="test-card">
+    <div class="test-stars">★★★★★</div>
+    <p class="test-q">"${h(t.message)}"</p>
+    <div class="test-by">
+      <div class="test-av">${h(ini)}</div>
+      <div><div class="test-nm">${h(t.name)}</div><div class="test-car-lbl">${t.car_label?h(t.car_label):''}</div></div>
+    </div>
+  </div>`;
+}
+function defaultTestimonials(){
+  return`<div class="test-card"><div class="test-stars">★★★★★</div><p class="test-q">"I applied for a bank loan through BPR and had no idea where to start with the vehicle documentation. Li Zheng handled the entire file — valuation, proforma, everything. The loan was approved in under two weeks and I drove home in my BYD Atto 3."</p><div class="test-by"><div class="test-av">JK</div><div><div class="test-nm">Jean-Claude K.</div><div class="test-car-lbl">BYD Atto 3 · 2024</div></div></div></div>
+  <div class="test-card"><div class="test-stars">★★★★★</div><p class="test-q">"I drove the Haval H6 from Kicukiro all the way to Musanze and back on a single tank. 800 kilometres. The team at Li Zheng told me exactly what to expect and they were right. Honest people, good cars — I've already referred three colleagues."</p><div class="test-by"><div class="test-av">AP</div><div><div class="test-nm">Aline P.</div><div class="test-car-lbl">Haval H6 Hybrid · 2023</div></div></div></div>
+  <div class="test-card"><div class="test-stars">★★★★★</div><p class="test-q">"My Chery Tiggo needed a specific part that no one in Kigali had in stock. I WhatsApped Li Zheng at 9am and had the genuine OEM part in my hands by 2pm the same day. That kind of service is rare and I won't go anywhere else."</p><div class="test-by"><div class="test-av">EM</div><div><div class="test-nm">Emmanuel M.</div><div class="test-car-lbl">Chery Tiggo 8 · 2023</div></div></div></div>`;
+}
+async function submitReview(){
+  const name=document.getElementById('rv-name').value.trim();
+  const car=document.getElementById('rv-car').value.trim();
+  const msg=document.getElementById('rv-msg').value.trim();
+  if(!name||!msg){alert('Please enter your name and review.');return}
+  const btn=document.querySelector('#rv-form-wrap .btn-fill');
+  if(btn){btn.textContent='Submitting…';btn.disabled=true}
+  if(sb){
+    const ini=name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
+    await sb.from('testimonials').insert({name,initials:ini,car_label:car||null,message:msg,approved:false});
+  }
+  if(btn){btn.textContent='Submit Review →';btn.disabled=false}
+  document.getElementById('rv-form-wrap').style.display='none';
+  document.getElementById('rv-ok').style.display='block';
+}
 
 /* DEMO */
 function demoCars(){return[
