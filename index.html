@@ -3,9 +3,15 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Li Zheng Automobile — New BYD, Chery & Haval in Kigali</title>
-<meta name="description" content="Buy new BYD, Chery, Haval and other premium Chinese cars in Kigali, Rwanda. Li Zheng Automobile Ltd — Kicukiro-Sonatube." />
+<title>Li Zheng Automobile — New BYD, Chery, Haval & More in Kigali</title>
+<meta name="description" content="Buy new BYD, Chery, Haval, GWM, MG and more premium Chinese cars in Kigali, Rwanda. Li Zheng Automobile Ltd — Kicukiro-Sonatube. Test drives available daily." />
 <link rel="icon" type="image/png" href="brand_assets/logo.png" />
+<meta property="og:title" content="Li Zheng Automobile — Premium Chinese Cars in Kigali" />
+<meta property="og:description" content="New BYD, Chery, Haval, GWM, MG and more. Rwanda's trusted Chinese car dealer. Kicukiro-Sonatube, Kigali." />
+<meta property="og:image" content="https://lizheng-auto.vercel.app/brand_assets/og-cover.jpg" />
+<meta property="og:url" content="https://lizheng-auto.vercel.app" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary_large_image" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,300;0,400;0,500;0,700;0,900;1,700&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" onload="this.onload=null;this.rel='stylesheet'" />
@@ -13,7 +19,6 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-<script src="https://cdn.emailjs.com/dist/email.min.js"></script>
 <style>
 :root {
   --bg: #050505;
@@ -301,17 +306,6 @@ section{padding:9rem 0}
 .cpg-desc{font-size:0.875rem;color:var(--text-muted);line-height:1.75;margin-bottom:1.75rem;font-weight:300}
 .cpg-ctas{display:flex;gap:0.65rem;flex-wrap:wrap;margin-bottom:1.5rem}
 .cpg-views{font-size:0.7rem;color:var(--text-dim);letter-spacing:0.06em}
-/* Finance calc */
-.calc-box{background:var(--surface);border:1px solid var(--border);padding:1.75rem;border-radius:2px;margin-top:1.75rem}
-.calc-box h4{font-family:var(--font-h);font-size:0.75rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:1.25rem}
-.calc-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;margin-bottom:1rem}
-.calc-f label{display:block;font-size:0.62rem;font-family:var(--font-h);font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-muted);margin-bottom:0.35rem}
-.calc-f input{width:100%;padding:0.6rem 0.8rem;background:var(--card2);border:1px solid var(--border);border-radius:2px;color:#fff;font-family:var(--font-h);font-size:0.83rem;outline:none;transition:border-color 0.2s}
-.calc-f input:focus{border-color:rgba(255,255,255,0.2)}
-.calc-out{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border-radius:2px;overflow:hidden}
-.calc-cell{background:var(--card2);padding:1rem;text-align:center}
-.calc-v{font-family:var(--font-h);font-size:1rem;font-weight:900;color:#fff}
-.calc-l{font-size:0.6rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.1em;margin-top:0.2rem}
 /* Walkround */
 .walkround-box{margin-top:1.75rem}
 .walkround-box h4{font-family:var(--font-h);font-size:0.75rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:1rem}
@@ -383,7 +377,7 @@ section{padding:9rem 0}
 .td-left h2 em{color:var(--red-light);font-style:normal}
 .td-left p{font-size:0.9rem;color:var(--text-muted);line-height:1.75;font-weight:300;margin-bottom:2rem}
 .td-feature{display:flex;align-items:flex-start;gap:0.75rem;margin-bottom:1rem}
-.td-feature .icon{width:32px;height:32px;background:var(--red-muted);border:1px solid var(--red-border);border-radius:2px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:0.9rem}
+.td-feature .icon{width:32px;height:32px;background:var(--red-muted);border:1px solid var(--red-border);border-radius:2px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .td-feature .text{font-size:0.83rem;color:rgba(255,255,255,0.6);font-weight:400}
 .td-right{}
 .form-wrap{background:var(--surface);border:1px solid var(--border);padding:2.5rem;border-radius:2px;position:relative}
@@ -413,7 +407,7 @@ section{padding:9rem 0}
 .why-cell::before{content:'';position:absolute;top:0;left:0;width:2px;height:0;background:var(--red);transition:height 0.4s}
 .why-cell:hover::before{height:100%}
 .why-cell:hover{background:var(--card2)}
-.why-ico{font-size:1.6rem;margin-bottom:1.25rem}
+.why-ico{width:40px;height:40px;background:var(--red-muted);border:1px solid var(--red-border);border-radius:2px;display:flex;align-items:center;justify-content:center;margin-bottom:1.25rem;flex-shrink:0}
 .why-title{font-family:var(--font-h);font-size:0.8rem;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:#fff;margin-bottom:0.6rem}
 .why-text{font-size:0.8rem;color:var(--text-muted);line-height:1.65;font-weight:300}
 
@@ -552,7 +546,7 @@ footer{background:#000;border-top:1px solid var(--border);padding:3.5rem 3rem 2.
 <nav id="nav">
   <div class="nav-logo">
     <img src="brand_assets/logo.png" alt="Li Zheng" onerror="this.style.display='none'" />
-    <div class="nav-logo-text">LI ZHENG <em>AUTO</em></div>
+    <div class="nav-logo-text">LI ZHENG <em>AUTOMOBILE</em></div>
   </div>
   <ul class="nav-links">
     <li><a href="#all-cars" onclick="showMain()">Cars</a></li>
@@ -607,20 +601,32 @@ footer{background:#000;border-top:1px solid var(--border);padding:3.5rem 3rem 2.
     <span class="brand-item">GWM</span><span class="brand-dot"></span>
     <span class="brand-item">MG</span><span class="brand-dot"></span>
     <span class="brand-item">DONGFENG</span><span class="brand-dot"></span>
+    <span class="brand-item">TANK</span><span class="brand-dot"></span>
+    <span class="brand-item">JETOUR</span><span class="brand-dot"></span>
+    <span class="brand-item">OMODA</span><span class="brand-dot"></span>
+    <span class="brand-item">JAECOO</span><span class="brand-dot"></span>
+    <span class="brand-item">DEEPAL</span><span class="brand-dot"></span>
+    <span class="brand-item">GAC</span><span class="brand-dot"></span>
     <span class="brand-item">BYD</span><span class="brand-dot"></span>
     <span class="brand-item">CHERY</span><span class="brand-dot"></span>
     <span class="brand-item">HAVAL</span><span class="brand-dot"></span>
     <span class="brand-item">GWM</span><span class="brand-dot"></span>
     <span class="brand-item">MG</span><span class="brand-dot"></span>
     <span class="brand-item">DONGFENG</span><span class="brand-dot"></span>
+    <span class="brand-item">TANK</span><span class="brand-dot"></span>
+    <span class="brand-item">JETOUR</span><span class="brand-dot"></span>
+    <span class="brand-item">OMODA</span><span class="brand-dot"></span>
+    <span class="brand-item">JAECOO</span><span class="brand-dot"></span>
+    <span class="brand-item">DEEPAL</span><span class="brand-dot"></span>
+    <span class="brand-item">GAC</span><span class="brand-dot"></span>
   </div>
 </div>
 
 <!-- STATS -->
 <div id="stats">
   <div class="stats-row">
-    <div class="stat-cell"><div class="stat-n" data-t="50">0<span>+</span></div><div class="stat-l">Cars in Stock</div></div>
-    <div class="stat-cell"><div class="stat-n" data-t="6">0<span>+</span></div><div class="stat-l">Brands</div></div>
+    <div class="stat-cell"><div class="stat-n" data-t="20">0<span>+</span></div><div class="stat-l">Cars in Stock</div></div>
+    <div class="stat-cell"><div class="stat-n" data-t="10">0<span>+</span></div><div class="stat-l">Brands</div></div>
     <div class="stat-cell"><div class="stat-n" data-t="200">0<span>+</span></div><div class="stat-l">Happy Clients</div></div>
     <div class="stat-cell"><div class="stat-n" data-t="5">0<span>+</span></div><div class="stat-l">Years in Kigali</div></div>
   </div>
@@ -653,7 +659,9 @@ footer{background:#000;border-top:1px solid var(--border);padding:3.5rem 3rem 2.
     <select id="s-make" onchange="filterCars()">
       <option value="">All Brands</option>
       <option>BYD</option><option>Chery</option><option>Haval</option>
-      <option>GWM</option><option>MG</option>
+      <option>GWM</option><option>MG</option><option>Dongfeng</option>
+      <option>Tank</option><option>Jetour</option><option>Omoda</option>
+      <option>Jaecoo</option><option>Deepal</option><option>GAC</option>
     </select>
     <select id="s-body" onchange="filterCars()">
       <option value="">All Types</option>
@@ -706,9 +714,18 @@ footer{background:#000;border-top:1px solid var(--border);padding:3.5rem 3rem 2.
       <div class="eyebrow">Feel It First</div>
       <h2>Book a<br/><em>Test Drive</em></h2>
       <p>Pick any car from our showroom at Kicukiro-Sonatube. Our team will have it ready and walk you through everything.</p>
-      <div class="td-feature"><div class="icon">📍</div><div class="text">Kicukiro-Sonatube, Kigali — open Mon–Sat 08:00–18:00</div></div>
-      <div class="td-feature"><div class="icon">⚡</div><div class="text">Same-day test drives available. Fast WhatsApp confirmation.</div></div>
-      <div class="td-feature"><div class="icon">🔑</div><div class="text">No deposit required. Just show up and drive.</div></div>
+      <div class="td-feature">
+        <div class="icon"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" style="width:16px;height:16px"><path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg></div>
+        <div class="text">Kicukiro-Sonatube, Kigali — open Mon–Sun 09:00–20:00</div>
+      </div>
+      <div class="td-feature">
+        <div class="icon"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" style="width:16px;height:16px"><path d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg></div>
+        <div class="text">Same-day test drives available. WhatsApp confirmation within minutes.</div>
+      </div>
+      <div class="td-feature">
+        <div class="icon"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" style="width:16px;height:16px"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
+        <div class="text">No deposit required. Come in, get the keys, and drive.</div>
+      </div>
     </div>
     <div class="td-right">
       <div class="form-wrap">
@@ -725,8 +742,10 @@ footer{background:#000;border-top:1px solid var(--border);padding:3.5rem 3rem 2.
               <select id="td-time">
                 <option value="09:00">09:00</option><option value="10:00">10:00</option>
                 <option value="11:00">11:00</option><option value="12:00">12:00</option>
-                <option value="14:00">14:00</option><option value="15:00">15:00</option>
-                <option value="16:00">16:00</option>
+                <option value="13:00">13:00</option><option value="14:00">14:00</option>
+                <option value="15:00">15:00</option><option value="16:00">16:00</option>
+                <option value="17:00">17:00</option><option value="18:00">18:00</option>
+                <option value="19:00">19:00</option><option value="20:00">20:00</option>
               </select>
             </div>
             <div class="f-field full"><label>Message</label><textarea id="td-msg" placeholder="Any special requests…"></textarea></div>
@@ -736,9 +755,9 @@ footer{background:#000;border-top:1px solid var(--border);padding:3.5rem 3rem 2.
           </div>
         </div>
         <div class="form-success" id="td-ok">
-          <div class="check">✅</div>
-          <h3>Booking Confirmed!</h3>
-          <p>We'll contact you shortly to confirm your test drive. See you at the showroom.</p>
+          <div class="check"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" style="width:48px;height:48px;color:var(--red-light);margin:0 auto"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
+          <h3>Booking Received</h3>
+          <p>We'll reach out on WhatsApp to confirm the time. See you at Kicukiro-Sonatube.</p>
         </div>
       </div>
     </div>
@@ -753,13 +772,29 @@ footer{background:#000;border-top:1px solid var(--border);padding:3.5rem 3rem 2.
         <div class="eyebrow">Why Choose Us</div>
         <h2 class="display-title">Why <em>Li Zheng</em></h2>
       </div>
-      <p class="section-sub" style="max-width:420px">We're not just a dealership. We're your long-term partner for everything automotive in Rwanda.</p>
+      <p class="section-sub" style="max-width:420px">Four reasons clients in Kigali keep coming back — and sending their family.</p>
     </div>
     <div class="why-grid">
-      <div class="why-cell"><div class="why-ico">🏆</div><div class="why-title">Certified Dealer</div><div class="why-text">Authorized distributor for BYD, Chery and Haval in Rwanda. Every vehicle comes with proper documentation.</div></div>
-      <div class="why-cell"><div class="why-ico">🔩</div><div class="why-title">Genuine Spare Parts</div><div class="why-text">Full OEM spare parts catalogue. We stock what you need and source what we don't within days.</div></div>
-      <div class="why-cell"><div class="why-ico">🛡️</div><div class="why-title">After-Sales Support</div><div class="why-text">Our team stays with you after the sale. Service, maintenance, parts — we've got you covered long-term.</div></div>
-      <div class="why-cell"><div class="why-ico">💳</div><div class="why-title">Flexible Financing</div><div class="why-text">We work with leading Rwandan banks and MFIs to get you the most affordable payment plan.</div></div>
+      <div class="why-cell">
+        <div class="why-ico"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6" style="width:20px;height:20px;color:var(--red-light)"><path d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/></svg></div>
+        <div class="why-title">Authorized Dealer</div>
+        <div class="why-text">Authorized distributor for BYD, Chery, Haval, GWM and more in Rwanda. Every vehicle is sold with full certification and proper import documentation.</div>
+      </div>
+      <div class="why-cell">
+        <div class="why-ico"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6" style="width:20px;height:20px;color:var(--red-light)"><path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg></div>
+        <div class="why-title">Genuine Spare Parts</div>
+        <div class="why-text">Full OEM catalogue for all Chinese brands we carry. If it's in stock, you get it today. If it's not, we source it within days — no waiting weeks at a garage.</div>
+      </div>
+      <div class="why-cell">
+        <div class="why-ico"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6" style="width:20px;height:20px;color:var(--red-light)"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg></div>
+        <div class="why-title">After-Sales Support</div>
+        <div class="why-text">The relationship doesn't end when you drive off. We remain your point of contact for servicing, maintenance, and any issues — for the life of your vehicle.</div>
+      </div>
+      <div class="why-cell">
+        <div class="why-ico"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6" style="width:20px;height:20px;color:var(--red-light)"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg></div>
+        <div class="why-title">Bank Financing & Documentation</div>
+        <div class="why-text">We prepare all paperwork required by Rwandan banks — valuation reports, proforma invoices, and clearance certificates. We work with BPR, I&M, Cogebanque and KCB to get your loan approved fast.</div>
+      </div>
     </div>
   </div>
 </section>
@@ -784,9 +819,21 @@ footer{background:#000;border-top:1px solid var(--border);padding:3.5rem 3rem 2.
     <div class="eyebrow">Client Stories</div>
     <h2 class="display-title" style="margin-bottom:3rem">What They <em>Say</em></h2>
     <div class="test-grid">
-      <div class="test-card"><div class="test-stars">★★★★★</div><p class="test-q">"The BYD Atto 3 has completely changed how I think about cars. Li Zheng walked me through everything — financing, insurance, registration. Exceptional service from start to finish."</p><div class="test-by"><div class="test-av">JM</div><div><div class="test-nm">Jean-Marie K.</div><div class="test-car-lbl">BYD Atto 3 · 2024</div></div></div></div>
-      <div class="test-card"><div class="test-stars">★★★★★</div><p class="test-q">"I was skeptical about Chinese cars. Three months with my Haval H6 later, I'm a convert. Fuel-efficient, spacious, and the team at Li Zheng is always available when I need them."</p><div class="test-by"><div class="test-av">AP</div><div><div class="test-nm">Aline P.</div><div class="test-car-lbl">Haval H6 Hybrid · 2023</div></div></div></div>
-      <div class="test-card"><div class="test-stars">★★★★★</div><p class="test-q">"Got genuine spare parts for my Chery Tiggo in one day. Fair prices, no waiting, no drama. Li Zheng is my first call for anything car-related in Kigali."</p><div class="test-by"><div class="test-av">EM</div><div><div class="test-nm">Emmanuel M.</div><div class="test-car-lbl">Chery Tiggo 8 · 2023</div></div></div></div>
+      <div class="test-card">
+        <div class="test-stars">★★★★★</div>
+        <p class="test-q">"I applied for a bank loan through BPR and had no idea where to start with the vehicle documentation. Li Zheng handled the entire file — valuation, proforma, everything. The loan was approved in under two weeks and I drove home in my BYD Atto 3."</p>
+        <div class="test-by"><div class="test-av">JK</div><div><div class="test-nm">Jean-Claude K.</div><div class="test-car-lbl">BYD Atto 3 · 2024</div></div></div>
+      </div>
+      <div class="test-card">
+        <div class="test-stars">★★★★★</div>
+        <p class="test-q">"I drove the Haval H6 from Kicukiro all the way to Musanze and back on a single tank. 800 kilometres. The team at Li Zheng told me exactly what to expect and they were right. Honest people, good cars — I've already referred three colleagues."</p>
+        <div class="test-by"><div class="test-av">AP</div><div><div class="test-nm">Aline P.</div><div class="test-car-lbl">Haval H6 Hybrid · 2023</div></div></div>
+      </div>
+      <div class="test-card">
+        <div class="test-stars">★★★★★</div>
+        <p class="test-q">"My Chery Tiggo needed a specific part that no one in Kigali had in stock. I WhatsApped Li Zheng at 9am and had the genuine OEM part in my hands by 2pm the same day. That kind of service is rare and I won't go anywhere else."</p>
+        <div class="test-by"><div class="test-av">EM</div><div><div class="test-nm">Emmanuel M.</div><div class="test-car-lbl">Chery Tiggo 8 · 2023</div></div></div>
+      </div>
     </div>
   </div>
 </section>
@@ -799,7 +846,7 @@ footer{background:#000;border-top:1px solid var(--border);padding:3.5rem 3rem 2.
       <h2>Visit Our<br/><em>Showroom</em></h2>
       <div class="ci"><div class="ci-ico">📍</div><div><div class="ci-lbl">Location</div><div class="ci-val">Kicukiro-Sonatube, Kigali, Rwanda</div></div></div>
       <div class="ci"><div class="ci-ico">📞</div><div><div class="ci-lbl">Phone / WhatsApp</div><div class="ci-val"><a href="tel:+250781845376">+250 781 845 376</a></div></div></div>
-      <div class="ci"><div class="ci-ico">🕐</div><div><div class="ci-lbl">Working Hours</div><div class="ci-val">Mon–Sat 08:00–18:00 · Sun 09:00–14:00</div></div></div>
+      <div class="ci"><div class="ci-ico">🕐</div><div><div class="ci-lbl">Working Hours</div><div class="ci-val">Mon–Sun 09:00–20:00</div></div></div>
       <div class="contact-btns">
         <a href="https://wa.me/250781845376" target="_blank" class="btn-wa-full">
           <svg viewBox="0 0 24 24" width="15" height="15" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
@@ -811,8 +858,9 @@ footer{background:#000;border-top:1px solid var(--border);padding:3.5rem 3rem 2.
     </div>
     <div>
       <div class="map-box">
-        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3987.6!2d30.085!3d-1.985!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x19dca5c4b0da7a35%3A0x4a5d9e6a1f2b3c4d!2sKicukiro%2C%20Kigali!5e0!3m2!1sen!2srw!4v1620000000000!5m2!1sen!2srw" allowfullscreen loading="lazy" title="Li Zheng Location"></iframe>
+        <iframe src="https://maps.google.com/maps?q=Kicukiro+Sonatube+Kigali+Rwanda&t=m&z=16&ie=UTF8&iwloc=&output=embed" allowfullscreen loading="lazy" title="Li Zheng Automobile Location"></iframe>
       </div>
+      <a href="https://maps.app.goo.gl/M2n3ZHZbEefP7WbU9" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:0.4rem;margin-top:0.75rem;font-size:0.72rem;font-family:var(--font-h);font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);transition:color 0.2s" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='var(--text-muted)'">Open in Google Maps →</a>
     </div>
   </div>
 </section>
@@ -885,11 +933,10 @@ footer{background:#000;border-top:1px solid var(--border);padding:3.5rem 3rem 2.
 
 <script>
 const SUPABASE_URL='https://kzwzmzcdbvqistjmlbip.supabase.co',SUPABASE_ANON='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt6d3ptemNkYnZxaXN0am1sYmlwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAxNDM2MDAsImV4cCI6MjA5NTcxOTYwMH0.hG9ZGDV5RbvnEUHvdRBv69rK9VLDK9d8Osz7pObCeZ8';
-const EMAILJS_SVC='YOUR_EMAILJS_SERVICE_ID',EMAILJS_TPL='YOUR_EMAILJS_TEMPLATE_ID',EMAILJS_KEY='YOUR_EMAILJS_PUBLIC_KEY';
+const FORMSPREE_TD='YOUR_FORMSPREE_ID';
 const WA='250781845376';
 let sb=null;
 if(SUPABASE_URL!=='YOUR_SUPABASE_URL'){sb=supabase.createClient(SUPABASE_URL,SUPABASE_ANON)}
-if(EMAILJS_KEY!=='YOUR_EMAILJS_PUBLIC_KEY'){emailjs.init(EMAILJS_KEY)}
 gsap.registerPlugin(ScrollTrigger);
 
 /* NAV */
@@ -1059,24 +1106,8 @@ async function renderCarPage(id){
         <a href="tel:+${WA}" class="btn-ghost">Call Us</a>
       </div>
       <div class="cpg-views">${(car.views||0)+1} people viewed this car</div>
-      <div class="calc-box">
-        <h4>Finance Calculator</h4>
-        <div class="calc-grid">
-          <div class="calc-f"><label>Car Price (RWF)</label><input id="cp" type="number" value="${car.price}" oninput="calcNow()"/></div>
-          <div class="calc-f"><label>Down Payment (RWF)</label><input id="cd" type="number" value="${Math.round(car.price*0.2)}" oninput="calcNow()"/></div>
-          <div class="calc-f"><label>Interest Rate (%/yr)</label><input id="cr" type="number" value="18" step="0.5" oninput="calcNow()"/></div>
-          <div class="calc-f"><label>Term (months)</label><input id="ct" type="number" value="48" oninput="calcNow()"/></div>
-        </div>
-        <div class="calc-out">
-          <div class="calc-cell"><div class="calc-v" id="cv-m">—</div><div class="calc-l">Monthly</div></div>
-          <div class="calc-cell"><div class="calc-v" id="cv-i">—</div><div class="calc-l">Interest</div></div>
-          <div class="calc-cell"><div class="calc-v" id="cv-t">—</div><div class="calc-l">Total</div></div>
-        </div>
-        <button class="btn-ghost" style="width:100%;margin-top:0.75rem;font-size:0.72rem;justify-content:center;padding:0.6rem" onclick="calcWA('${h(car.make+' '+car.model+' '+car.year)}')">Apply for Financing via WhatsApp →</button>
-      </div>
       ${car.walkround_url?`<div class="walkround-box"><h4>360° Walkround</h4><div class="wk-frame"><iframe src="${ytEmbed(car.walkround_url)}" allowfullscreen loading="lazy"></iframe></div></div>`:''}
     </div>`;
-  calcNow();
 }
 function galMove(d){galGo((galIdx+d+galImgs.length)%galImgs.length)}
 function galGo(i){
@@ -1087,25 +1118,6 @@ function galGo(i){
 }
 function ytEmbed(url){const m=url.match(/(?:youtu\.be\/|youtube\.com\/watch\?v=|youtube\.com\/embed\/)([^&?/]+)/);return m?`https://www.youtube.com/embed/${m[1]}`:url}
 
-/* CALC */
-function calcNow(){
-  const p=parseFloat(document.getElementById('cp')?.value)||0;
-  const d=parseFloat(document.getElementById('cd')?.value)||0;
-  const r=parseFloat(document.getElementById('cr')?.value)||0;
-  const n=parseInt(document.getElementById('ct')?.value)||1;
-  const pr=Math.max(0,p-d);const mr=r/100/12;
-  const mo=mr===0?pr/n:pr*mr*Math.pow(1+mr,n)/(Math.pow(1+mr,n)-1);
-  const ti=mo*n-pr,tot=mo*n+d;
-  const fmt=v=>'RWF '+Math.round(v).toLocaleString();
-  document.getElementById('cv-m').textContent=fmt(mo);
-  document.getElementById('cv-i').textContent=fmt(ti);
-  document.getElementById('cv-t').textContent=fmt(tot);
-}
-function calcWA(name){
-  const m=document.getElementById('cv-m')?.textContent||'';
-  const t=document.getElementById('cv-t')?.textContent||'';
-  open(`https://wa.me/${WA}?text=${encodeURIComponent(`Hi Li Zheng, I'd like financing for the ${name}. Monthly: ${m}, Total: ${t}.`)},'_blank'`);
-}
 
 /* COMPARE */
 let cmpList=[];
@@ -1181,8 +1193,26 @@ async function submitTD(){
   const msg=document.getElementById('td-msg').value.trim();
   if(!name||!phone||!date||!time){alert('Please fill in all required fields.');return}
   const fd=new Date(date).toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  const btn=document.querySelector('#td-wrap .btn-fill');
+  if(btn){btn.textContent='Booking…';btn.disabled=true}
   if(sb)await sb.from('inquiries').insert({type:'test_drive',car_name:car||'Any',name,phone,email:email||null,message:`${fd} at ${time}. ${msg}`});
-  if(EMAILJS_SVC!=='YOUR_EMAILJS_SERVICE_ID')emailjs.send(EMAILJS_SVC,EMAILJS_TPL,{from_name:name,phone,car_name:car||'Any',message:`Test Drive: ${fd} at ${time}. ${msg}`,type:'Test Drive'});
+  if(FORMSPREE_TD!=='YOUR_FORMSPREE_ID'){
+    try{
+      await fetch(`https://formspree.io/f/${FORMSPREE_TD}`,{
+        method:'POST',
+        headers:{'Content-Type':'application/json','Accept':'application/json'},
+        body:JSON.stringify({
+          name,phone,
+          email:email||'Not provided',
+          car:car||'Any available',
+          date:fd,time,
+          message:msg||'—',
+          _subject:`New Test Drive Booking — ${car||'Any'} — ${fd} at ${time}`
+        })
+      });
+    }catch(e){console.warn('Formspree error',e)}
+  }
+  if(btn){btn.textContent='Book Test Drive →';btn.disabled=false}
   document.getElementById('td-wrap').style.display='none';
   document.getElementById('td-ok').style.display='block';
 }

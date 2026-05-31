@@ -10,7 +10,6 @@
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800&family=DM+Sans:opsz,wght@9..40,400;9..40,500&display=swap"/></noscript>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 <style>
 :root{
   --bg:#050505;--surface:#0D0D0D;--card:#111;--card2:#181818;
@@ -159,20 +158,6 @@ td{padding:0.8rem 1rem;vertical-align:middle;font-size:0.82rem;color:var(--text)
 .up-fill{height:100%;background:var(--red);width:0;transition:width 0.3s}
 .up-lbl{font-size:0.65rem;color:var(--muted);margin-top:0.25rem;font-family:var(--font-h)}
 .form-acts{display:flex;gap:0.65rem;justify-content:flex-end;margin-top:1.75rem;padding-top:1.5rem;border-top:1px solid var(--border)}
-/* CSV Panel */
-#csv-panel{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:1000;backdrop-filter:blur(6px);padding:1rem;overflow-y:auto}
-#csv-panel.open{display:flex;align-items:flex-start;justify-content:center}
-.csv-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:2rem;width:100%;max-width:900px;margin:auto}
-.csv-card h2{font-family:var(--font-h);font-size:1.1rem;font-weight:800;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:0.25rem}
-.csv-card p{font-size:0.78rem;color:var(--muted);margin-bottom:1.5rem}
-.csv-drop{border:1.5px dashed var(--border);border-radius:var(--r);padding:2rem;text-align:center;cursor:pointer;transition:all 0.2s;margin-bottom:1.5rem}
-.csv-drop:hover{border-color:rgba(255,255,255,0.2);background:rgba(255,255,255,0.02)}
-.csv-drop p{color:var(--muted);font-size:0.82rem}
-.csv-drop span{color:var(--red-l)}
-#csv-file-in{display:none}
-.csv-preview-wrap{overflow-x:auto;max-height:400px;margin-bottom:1.25rem;display:none}
-.csv-preview{font-size:0.72rem;color:var(--text)}
-.csv-actions{display:flex;gap:0.65rem;justify-content:flex-end}
 /* Delete confirm */
 #del-dialog{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:2000;backdrop-filter:blur(4px);align-items:center;justify-content:center}
 #del-dialog.open{display:flex}
@@ -209,7 +194,7 @@ td{padding:0.8rem 1rem;vertical-align:middle;font-size:0.82rem;color:var(--text)
 <!-- LOGIN -->
 <div id="login">
   <div class="login-box">
-    <div class="login-logo">LI ZHENG <em>AUTO</em></div>
+    <div class="login-logo">LI ZHENG <em>AUTOMOBILE</em></div>
     <div class="login-sub">Admin Panel · Staff Only</div>
     <label>Password</label>
     <input type="password" id="pwd" placeholder="Enter admin password" />
@@ -222,7 +207,7 @@ td{padding:0.8rem 1rem;vertical-align:middle;font-size:0.82rem;color:var(--text)
 <div id="app">
   <!-- SIDEBAR -->
   <aside class="sidebar">
-    <div class="sb-brand"><div class="name">LI ZHENG <em>AUTO</em></div><div class="tag">Admin · v1.0</div></div>
+    <div class="sb-brand"><div class="name">LI ZHENG <em>AUTOMOBILE</em></div><div class="tag">Admin · v1.0</div></div>
     <nav class="sb-nav">
       <div class="sb-item on" onclick="nav('dashboard')" id="sb-dashboard">
         <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
@@ -287,12 +272,10 @@ td{padding:0.8rem 1rem;vertical-align:middle;font-size:0.82rem;color:var(--text)
         <select id="car-make-f" onchange="filterCarsAdmin()">
           <option value="">All Makes</option>
           <option>BYD</option><option>Chery</option><option>Haval</option>
-          <option>GWM</option><option>MG</option>
+          <option>GWM</option><option>MG</option><option>Dongfeng</option>
+          <option>Tank</option><option>Jetour</option><option>Omoda</option>
+          <option>Jaecoo</option><option>Deepal</option><option>GAC</option>
         </select>
-        <button class="btn btn-border" onclick="openCSV()">
-          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
-          Import CSV
-        </button>
         <button class="btn btn-red" onclick="openAddCar()">
           <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
           Add Car
@@ -363,7 +346,10 @@ td{padding:0.8rem 1rem;vertical-align:middle;font-size:0.82rem;color:var(--text)
         <select id="f-make">
           <option value="">Select…</option>
           <option>BYD</option><option>Chery</option><option>Haval</option>
-          <option>GWM</option><option>MG</option><option>Dongfeng</option><option>Other</option>
+          <option>GWM</option><option>MG</option><option>Dongfeng</option>
+          <option>Tank</option><option>Jetour</option><option>Omoda</option>
+          <option>Jaecoo</option><option>Deepal</option><option>GAC</option>
+          <option>Other</option>
         </select>
       </div>
       <div class="f-item"><label>Model <em>*</em></label><input id="f-model" placeholder="e.g. Atto 3"/></div>
@@ -449,31 +435,6 @@ td{padding:0.8rem 1rem;vertical-align:middle;font-size:0.82rem;color:var(--text)
   </div>
 </div>
 
-<!-- CSV PANEL -->
-<div id="csv-panel">
-  <div class="csv-card">
-    <h2>Bulk Import Cars (CSV)</h2>
-    <p>Download the template, fill it in Excel or Google Sheets, then upload here. All cars will be inserted into the database instantly.</p>
-    <div style="display:flex;gap:0.65rem;margin-bottom:1.5rem">
-      <button class="btn btn-border" onclick="downloadCSVTemplate()">⬇ Download Template</button>
-      <button class="btn btn-border" onclick="document.getElementById('csv-file-in').click()">📁 Upload CSV</button>
-      <input type="file" id="csv-file-in" accept=".csv" onchange="parseCSV(event)" style="display:none"/>
-    </div>
-    <div class="csv-preview-wrap" id="csv-preview-wrap">
-      <div style="font-family:var(--font-h);font-size:0.65rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:0.75rem">Preview (<span id="csv-count">0</span> rows)</div>
-      <div class="tbl-wrap" style="max-height:320px;overflow-y:auto">
-        <table class="csv-preview" id="csv-table"><thead></thead><tbody></tbody></table>
-      </div>
-    </div>
-    <div class="csv-actions">
-      <button class="btn btn-border" onclick="closeCSV()">Cancel</button>
-      <button class="btn btn-red" id="csv-confirm-btn" style="display:none" onclick="confirmCSV()">
-        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><path d="M5 13l4 4L19 7"/></svg>
-        Import All
-      </button>
-    </div>
-  </div>
-</div>
 
 <!-- DELETE CONFIRM -->
 <div id="del-dialog">
@@ -883,52 +844,6 @@ async function doDel(){
   else filterPartsAdmin();
 }
 
-/* ══ CSV IMPORT ══════════════════════════════════════════ */
-let csvRows=[];
-function openCSV(){csvRows=[];document.getElementById('csv-preview-wrap').style.display='none';document.getElementById('csv-confirm-btn').style.display='none';document.getElementById('csv-panel').classList.add('open');document.body.style.overflow='hidden'}
-function closeCSV(){document.getElementById('csv-panel').classList.remove('open');document.body.style.overflow='';csvRows=[]}
-function downloadCSVTemplate(){
-  const cols=['make','model','year','price','price_label','body_type','fuel_type','transmission','engine_cc','color','seats','mileage','description','walkround_url'];
-  const sample=['BYD','Atto 3','2024','32000000','RWF 32,000,000','SUV','Electric','Automatic','Electric 150kW','Pearl White','5','0','Electric compact SUV with 420km range',''];
-  const csv=cols.join(',')+'\n'+sample.join(',');
-  const a=document.createElement('a');a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv);a.download='lizheng-cars-template.csv';a.click();
-}
-function parseCSV(e){
-  const file=e.target.files[0];if(!file)return;
-  e.target.value='';
-  Papa.parse(file,{header:true,skipEmptyLines:true,complete:res=>{
-    csvRows=res.data.filter(r=>r.make&&r.model);
-    document.getElementById('csv-count').textContent=csvRows.length;
-    const table=document.getElementById('csv-table');
-    if(!csvRows.length){toast('No valid rows found','err');return}
-    const cols=Object.keys(csvRows[0]);
-    table.innerHTML=`<thead><tr>${cols.map(c=>`<th>${c}</th>`).join('')}</tr></thead><tbody>${csvRows.slice(0,5).map(r=>`<tr>${cols.map(c=>`<td>${h(r[c]||'')}</td>`).join('')}</tr>`).join('')}${csvRows.length>5?`<tr><td colspan="${cols.length}" style="text-align:center;color:var(--muted);padding:0.5rem">…and ${csvRows.length-5} more rows</td></tr>`:''}</tbody>`;
-    document.getElementById('csv-preview-wrap').style.display='block';
-    document.getElementById('csv-confirm-btn').style.display='inline-flex';
-  }});
-}
-async function confirmCSV(){
-  if(!csvRows.length)return;
-  const btn=document.getElementById('csv-confirm-btn');btn.textContent='Importing…';btn.disabled=true;
-  const rows=csvRows.map(r=>({
-    make:r.make||'Unknown',model:r.model||'Unknown',
-    year:parseInt(r.year)||new Date().getFullYear(),
-    price:parseFloat(r.price)||0,
-    price_label:r.price_label||'Call for price',
-    body_type:r.body_type||null,fuel_type:r.fuel_type||null,
-    transmission:r.transmission||null,engine_cc:r.engine_cc||null,
-    color:r.color||null,seats:r.seats?parseInt(r.seats):null,
-    mileage:parseInt(r.mileage)||0,description:r.description||null,
-    walkround_url:r.walkround_url||null,images:[],features:[],
-    status:'available',featured:false,views:0,
-  }));
-  if(db){const{error}=await db.from('cars').insert(rows);if(error){toast('Import failed: '+error.message,'err');btn.textContent='Import All';btn.disabled=false;return}}
-  else{rows.forEach(r=>allCars.unshift({id:'csv-'+Date.now()+Math.random(),...r,created_at:new Date().toISOString()}))}
-  btn.textContent='Import All';btn.disabled=false;
-  closeCSV();toast(`${rows.length} cars imported!`,'ok');
-  await fetchAll();
-  if(curView==='dashboard')loadDashboard();else filterCarsAdmin();
-}
 
 /* ══ UTILS ═══════════════════════════════════════════════ */
 function h(s){if(!s)return'';return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
