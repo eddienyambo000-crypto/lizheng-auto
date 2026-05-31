@@ -713,13 +713,40 @@ function onFileSelect(e){processFiles([...e.target.files]);e.target.value=''}
 function onDragOver(e){e.preventDefault();document.getElementById('upload-zone').classList.add('drag')}
 function onDragLeave(){document.getElementById('upload-zone').classList.remove('drag')}
 function onDrop(e){e.preventDefault();document.getElementById('upload-zone').classList.remove('drag');processFiles([...e.dataTransfer.files].filter(f=>f.type.startsWith('image/')))}
-function processFiles(files){
-  files.forEach(f=>{
-    const r=new FileReader();
-    r.onload=ev=>{existingImgs.push({url:ev.target.result,local:true,file:f});renderImgGrid();initSortable()};
-    r.readAsDataURL(f);
+
+function compressImage(file,maxW=1600,quality=0.82){
+  return new Promise(resolve=>{
+    const img=new Image();
+    const objUrl=URL.createObjectURL(file);
+    img.onload=()=>{
+      URL.revokeObjectURL(objUrl);
+      let w=img.width,h=img.height;
+      if(w>maxW){h=Math.round(h*maxW/w);w=maxW}
+      const c=document.createElement('canvas');c.width=w;c.height=h;
+      c.getContext('2d').drawImage(img,0,0,w,h);
+      c.toBlob(blob=>{
+        const name=file.name.replace(/\.[^.]+$/,'.jpg');
+        resolve({blob,file:new File([blob],name,{type:'image/jpeg'})});
+      },'image/jpeg',quality);
+    };
+    img.onerror=()=>{URL.revokeObjectURL(objUrl);resolve({blob:file,file})};
+    img.src=objUrl;
   });
 }
+
+async function processFiles(files){
+  const zone=document.getElementById('upload-zone');
+  zone.style.opacity='0.5';
+  for(const f of files){
+    const {blob,file:compressed}=await compressImage(f);
+    const previewUrl=URL.createObjectURL(blob);
+    existingImgs.push({url:previewUrl,local:true,file:compressed});
+    renderImgGrid();
+  }
+  zone.style.opacity='1';
+  initSortable();
+}
+
 function renderImgGrid(){
   const g=document.getElementById('img-grid');
   g.innerHTML=existingImgs.map((img,i)=>`
@@ -729,7 +756,11 @@ function renderImgGrid(){
       <span class="order-badge">${i+1}</span>
     </div>`).join('');
 }
-function removeImg(i){existingImgs.splice(i,1);renderImgGrid();initSortable()}
+function removeImg(i){
+  const img=existingImgs[i];
+  if(img?.local&&img?.url?.startsWith('blob:'))URL.revokeObjectURL(img.url);
+  existingImgs.splice(i,1);renderImgGrid();initSortable();
+}
 function initSortable(){
   const g=document.getElementById('img-grid');
   if(g._sortable)g._sortable.destroy();
@@ -756,7 +787,7 @@ async function uploadAllImages(){
     const fname=`${Date.now()}-${i}-${item.file.name.replace(/\s+/g,'_')}`;
     fill.style.width=Math.round(i/toUpload.length*100)+'%';
     lbl.textContent=`Uploading ${i+1} of ${toUpload.length}…`;
-    const{data,error}=await db.storage.from(BUCKET).upload(fname,item.file,{contentType:item.file.type,upsert:false});
+    const{data,error}=await db.storage.from(BUCKET).upload(fname,item.file,{contentType:'image/jpeg',upsert:false});
     if(!error){const{data:pub}=db.storage.from(BUCKET).getPublicUrl(fname);if(pub?.publicUrl)result.push(pub.publicUrl)}
   }
   fill.style.width='100%';lbl.textContent='Upload complete!';
@@ -765,15 +796,15 @@ async function uploadAllImages(){
 }
 async function saveCar(){
   const btn=document.getElementById('save-btn');
-  const make=document.getElementById('f-make').value;
-  const model=document.getElementById('f-model').value.trim();
-  const year=parseInt(document.getElementById('f-year').value)||0;
+  const make=document.getElementById('f-make').value||'Unknown';
+  const model=document.getElementById('f-model').value.trim()||'New Listing';
+  const year=parseInt(document.getElementById('f-year').value)||new Date().getFullYear();
   const price=parseFloat(document.getElementById('f-price').value)||0;
-  const priceLabel=document.getElementById('f-price-label').value.trim();
-  if(!make||!model||!year||!price||!priceLabel){toast('Fill in all required fields','err');return}
+  const rawLabel=document.getElementById('f-price-label').value.trim();
+  const priceLabel=rawLabel||(price?'RWF '+price.toLocaleString():'Call for price');
   btn.textContent='Saving…';btn.disabled=true;
   const images=await uploadAllImages();
-  const payload={make,model,year,price,price_label:priceLabel,
+  const payload={make,model,year,price,price_label:priceLabel,views:(editingId?undefined:0),
     body_type:document.getElementById('f-body').value||null,
     fuel_type:document.getElementById('f-fuel').value||null,
     transmission:document.getElementById('f-trans').value||null,
